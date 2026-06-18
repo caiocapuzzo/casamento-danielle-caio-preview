@@ -96,9 +96,10 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .venue-details h3 { margin: 0; color: var(--olive-dark); font: 500 55px var(--serif); }
 .venue-time { margin: 5px 0 25px; color: var(--ink) !important; font: italic 23px var(--serif) !important; }
 .venue-details > p:not(.eyebrow) { color: #686e60; font-size: 12px; line-height: 1.8; }
+.venue-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 22px; min-height: 48px; padding: 0 22px; border: 0; text-decoration: none; cursor: pointer; font: 600 9px var(--sans); letter-spacing: .17em; text-transform: uppercase; transition: transform .2s, background .2s, color .2s; }
 .button:hover { transform: translateY(-2px); }
-.button.outline { margin-top: 22px; border: 1px solid var(--olive); color: var(--olive-dark); }
+.button.outline { border: 1px solid var(--olive); color: var(--olive-dark); }
 .button.outline:hover { background: var(--olive); color: white; }
 
 .details { background: linear-gradient(180deg, #f7f3ea 0%, #efe7d8 100%); }

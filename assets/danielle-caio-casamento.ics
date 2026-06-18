@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Danielle e Caio//Casamento 2027//PT-BR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:danielle-caio-casamento-20270821@site-casamento
+DTSTAMP:20260618T120000Z
+DTSTART:20270821T193000Z
+DTEND:20270822T030000Z
+SUMMARY:Casamento Danielle e Caio
+DESCRIPTION:Cerimonia no deck em frente ao lago e festa no espaco interno do Espaco Monett. Chegada dos convidados a partir das 16h30.
+LOCATION:Espaco Monett\, Sao Jose do Rio Preto - SP
+END:VEVENT
+END:VCALENDAR
