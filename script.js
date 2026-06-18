@@ -132,6 +132,50 @@ function initRsvp() {
   });
 }
 
+function initGalleryCarousel() {
+  const carousel = document.querySelector("#galleryCarousel");
+  const track = document.querySelector("#galleryTrack");
+  const dotsContainer = document.querySelector("#galleryDots");
+
+  if (!carousel || !track || !dotsContainer) return;
+
+  const slides = Array.from(track.querySelectorAll(".carousel-slide"));
+  const prevButton = carousel.querySelector(".carousel-arrow.prev");
+  const nextButton = carousel.querySelector(".carousel-arrow.next");
+
+  if (!slides.length || !prevButton || !nextButton) return;
+
+  let currentIndex = 0;
+
+  function renderDots() {
+    dotsContainer.innerHTML = "";
+    slides.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = `carousel-dot${index === currentIndex ? " active" : ""}`;
+      dot.setAttribute("aria-label", `Ir para foto ${index + 1}`);
+      dot.addEventListener("click", () => showSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function showSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle("active", slideIndex === currentIndex);
+    });
+    dotsContainer.querySelectorAll(".carousel-dot").forEach((dot, dotIndex) => {
+      dot.classList.toggle("active", dotIndex === currentIndex);
+    });
+  }
+
+  prevButton.addEventListener("click", () => showSlide(currentIndex - 1));
+  nextButton.addEventListener("click", () => showSlide(currentIndex + 1));
+
+  renderDots();
+  showSlide(0);
+}
+
 updateCountdown();
 updateLoveCounter();
 setInterval(updateCountdown, 1000);
@@ -139,3 +183,4 @@ setInterval(updateLoveCounter, 1000);
 initNavigation();
 initReveal();
 initRsvp();
+initGalleryCarousel();

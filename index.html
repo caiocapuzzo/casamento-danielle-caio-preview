@@ -145,7 +145,7 @@
             <div class="timeline-item">
               <strong>17:00 - 18:00</strong>
               <div>
-                <h3>Cerimônia no deck</h3>
+                <h3>Cerimônia no Deck</h3>
                 <p>Nosso sim acontecerá no deck em frente ao lago, em um cenário que escolhemos com muito carinho.</p>
               </div>
             </div>
@@ -273,20 +273,41 @@
         <p class="eyebrow">Nossos momentos</p>
         <h2>O amor mora nos <em>detalhes</em></h2>
       </div>
-      <div class="photo-grid">
-        <figure class="landscape landscape-one reveal"><img src="assets/jardim-casal.jpeg" alt="Danielle e Caio juntos em um jardim"></figure>
-        <figure class="portrait portrait-two reveal"><img src="assets/aventura-capacetes.jpeg" alt="Danielle e Caio usando capacetes antes de uma aventura"></figure>
-        <figure class="landscape landscape-two reveal"><img src="assets/mirante-abraco.jpeg" alt="Danielle e Caio abraçados em um mirante cercado pela natureza"></figure>
-        <figure class="portrait portrait-three reveal"><img src="assets/parede-tijolos.jpeg" alt="Danielle e Caio sorrindo diante de uma parede de tijolos"></figure>
-        <figure class="landscape landscape-three reveal"><img src="assets/jardim-sorrindo.jpeg" alt="Danielle e Caio sorrindo juntos em um jardim"></figure>
-        <figure class="portrait portrait-four reveal"><img src="assets/jardim-oculos.jpeg" alt="Danielle e Caio juntos em um dia ensolarado"></figure>
-        <figure class="landscape landscape-four reveal"><img src="assets/casal-reflexo.jpeg" alt="O casal sentado em um mirante de vidro"></figure>
-        <figure class="portrait portrait-five reveal"><img src="assets/casal-mirante.jpeg" alt="O casal em um mirante cercado pela natureza"></figure>
-        <figure class="fun landscape-five reveal">
-          <img src="assets/casal-dinossauro.jpeg" alt="O casal fazendo uma selfie divertida com um dinossauro">
-          <figcaption>Amor, aventuras<br>e algumas criaturas inesperadas.</figcaption>
-        </figure>
+      <div class="gallery-carousel reveal" id="galleryCarousel">
+        <button class="carousel-arrow prev" type="button" aria-label="Foto anterior">‹</button>
+        <div class="carousel-track" id="galleryTrack">
+          <figure class="carousel-slide active">
+            <img src="assets/jardim-casal.jpeg" alt="Danielle e Caio juntos em um jardim">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/aventura-capacetes.jpeg" alt="Danielle e Caio usando capacetes antes de uma aventura">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/mirante-abraco.jpeg" alt="Danielle e Caio abraçados em um mirante cercado pela natureza">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/parede-tijolos.jpeg" alt="Danielle e Caio sorrindo diante de uma parede de tijolos">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/jardim-sorrindo.jpeg" alt="Danielle e Caio sorrindo juntos em um jardim">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/jardim-oculos.jpeg" alt="Danielle e Caio juntos em um dia ensolarado">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/casal-reflexo.jpeg" alt="O casal sentado em um mirante de vidro">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/casal-mirante.jpeg" alt="O casal em um mirante cercado pela natureza">
+          </figure>
+          <figure class="carousel-slide">
+            <img src="assets/casal-dinossauro.jpeg" alt="O casal fazendo uma selfie divertida com um dinossauro">
+            <figcaption>Amor, aventuras<br>e algumas criaturas inesperadas.</figcaption>
+          </figure>
+        </div>
+        <button class="carousel-arrow next" type="button" aria-label="Próxima foto">›</button>
       </div>
+      <div class="carousel-dots" id="galleryDots" aria-label="Selecionar foto da galeria"></div>
     </section>
 
     <section class="rsvp section-pad" id="rsvp">
