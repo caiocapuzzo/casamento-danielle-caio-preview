@@ -117,6 +117,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .guide-item { position: relative; min-height: 168px; padding: 22px 18px 20px; background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.04)); border: 1px solid rgba(125,134,88,.15); }
 .guide-item::before { content: ""; position: absolute; top: 18px; left: 18px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(125,134,88,.18); background: rgba(255,255,255,.5); }
 .guide-mark { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; color: var(--olive-dark); font-size: 18px; line-height: 1; }
+.line-icon { width: 20px; height: 20px; fill: none; stroke: var(--olive-dark); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .guide-item h3 { margin: 18px 0 8px; color: var(--ink); font: 500 26px/1 var(--serif); }
 .guide-item p { margin: 0; color: #58604e; font-size: 12px; line-height: 1.8; }
 
@@ -126,7 +127,8 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .attire-copy p:last-child { margin: 26px 0 0; color: #666c5d; font-size: 12px; line-height: 1.9; }
 .attire-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .attire-item { padding: 20px 18px; background: rgba(125,134,88,.07); border: 1px solid rgba(125,134,88,.14); }
-.attire-item span { display: inline-block; margin-bottom: 14px; color: var(--olive-dark); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.attire-item span { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; color: var(--olive-dark); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.attire-icon { width: 18px; height: 18px; flex: 0 0 auto; }
 .attire-item p { margin: 0; color: #58604e; font-size: 12px; line-height: 1.85; }
 
 .raffle { background:
