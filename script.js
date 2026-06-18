@@ -28,6 +28,7 @@ menuButton.addEventListener("click", () => {
   navigation.classList.toggle("open", !isOpen);
   document.body.classList.toggle("menu-open", !isOpen);
 });
+
 navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
   menuButton.setAttribute("aria-expanded", "false");
   navigation.classList.remove("open");
@@ -42,10 +43,12 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.14 });
+
 document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 
 const rsvpForm = document.querySelector("#rsvpForm");
 const formNote = document.querySelector("#formNote");
+
 rsvpForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const response = Object.fromEntries(new FormData(rsvpForm).entries());
