@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Casamento de Danielle & Caio — 21 de agosto de 2027.">
+  <meta name="theme-color" content="#7d8658">
+  <title>Danielle & Caio — 21.08.2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <a class="mini-mark" href="#inicio" aria-label="Voltar ao início">
+      <img src="assets/logo-header.png" alt="Danielle e Caio">
+    </a>
+    <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navigation">
+      <span></span><span></span>
+      <span class="sr-only">Abrir menu</span>
+    </button>
+    <nav id="navigation" aria-label="Navegação principal">
+      <a href="#historia">Nossa história</a>
+      <a href="#celebracao">Celebração</a>
+      <a href="#momentos">Momentos</a>
+      <a class="nav-rsvp" href="#rsvp">Confirmar presença</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-image" role="img" aria-label="Danielle e Caio sorrindo um para o outro"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow light">Nós vamos nos casar</p>
+        <h1>Danielle <i>&</i> Caio</h1>
+        <div class="hero-date">
+          <span>21</span><b></b><span>08</span><b></b><span>2027</span>
+        </div>
+        <a class="scroll-hint" href="#contagem">Role para descobrir <span>↓</span></a>
+      </div>
+    </section>
+
+    <section class="countdown section-pad" id="contagem">
+      <div class="botanical botanical-left" aria-hidden="true">⌇</div>
+      <p class="eyebrow">Contando os dias</p>
+      <h2>Para o nosso <em>sim</em></h2>
+      <div class="counter" aria-label="Contagem regressiva para o casamento">
+        <div><strong id="days">000</strong><span>dias</span></div>
+        <i></i>
+        <div><strong id="hours">00</strong><span>horas</span></div>
+        <i></i>
+        <div><strong id="minutes">00</strong><span>minutos</span></div>
+        <i></i>
+        <div><strong id="seconds">00</strong><span>segundos</span></div>
+      </div>
+      <p class="save-date">Reserve esta data para celebrar com a gente.</p>
+    </section>
+
+    <section class="story section-pad" id="historia">
+      <div class="story-photo reveal">
+        <img src="assets/janela-flores.jpeg" alt="Danielle e Caio juntos diante de uma janela verde com flores">
+        <span class="photo-caption">A vida fica mais bonita lado a lado</span>
+      </div>
+      <div class="story-copy reveal">
+        <p class="eyebrow">Sobre nós</p>
+        <h2>Uma história feita de <em>encontros</em></h2>
+        <div class="fine-line"></div>
+        <p class="lead">Entre viagens, risadas e muitas histórias para contar, descobrimos que a vida é ainda melhor quando vivida lado a lado.</p>
+        <p>Agora estamos preparando o capítulo mais bonito até aqui — e queremos dividir esse momento com as pessoas que fazem parte da nossa caminhada.</p>
+        <p class="signature">Dani & Caio</p>
+      </div>
+    </section>
+
+    <section class="quote-band">
+      <div class="quote-photo" role="img" aria-label="Danielle e Caio abraçados sob luzes quentes"></div>
+      <div class="quote-overlay"></div>
+      <blockquote>
+        “O amor não é olhar um para o outro,<br> é olhar juntos na mesma direção.”
+        <cite>— Antoine de Saint-Exupéry</cite>
+      </blockquote>
+    </section>
+
+    <section class="venue section-pad" id="celebracao">
+      <div class="venue-heading reveal">
+        <p class="eyebrow">Onde tudo acontece</p>
+        <h2>Cerimônia <i>&</i> festa</h2>
+        <p>Escolhemos um lugar especial para vivermos cada instante desta celebração junto de vocês.</p>
+      </div>
+      <article class="venue-card reveal">
+        <div class="venue-art">
+          <img src="assets/espaco-monett-deck-crop.png" alt="Deck do Espaço Monett preparado para uma cerimônia de casamento">
+          <span>Espaço Monett · o cenário do nosso sim</span>
+        </div>
+        <div class="venue-details">
+          <p class="eyebrow">São José do Rio Preto · SP</p>
+          <h3>Espaço Monett</h3>
+          <p class="venue-time">Sábado · horário a confirmar</p>
+          <p>A cerimônia e a recepção acontecerão no mesmo local. Chegue com alguns minutos de antecedência para aproveitar tudo desde o começo.</p>
+          <a class="button outline" href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Monett+S%C3%A3o+Jos%C3%A9+do+Rio+Preto+SP" target="_blank" rel="noopener">Como chegar <span>↗</span></a>
+        </div>
+      </article>
+    </section>
+
+    <section class="gallery section-pad" id="momentos">
+      <div class="gallery-heading reveal">
+        <p class="eyebrow">Nossos momentos</p>
+        <h2>O amor mora nos <em>detalhes</em></h2>
+      </div>
+      <div class="photo-grid">
+        <figure class="landscape landscape-one reveal"><img src="assets/jardim-casal.jpeg" alt="Danielle e Caio juntos em um jardim"></figure>
+        <figure class="portrait portrait-two reveal"><img src="assets/aventura-capacetes.jpeg" alt="Danielle e Caio usando capacetes antes de uma aventura"></figure>
+        <figure class="landscape landscape-two reveal"><img src="assets/mirante-abraco.jpeg" alt="Danielle e Caio abraçados em um mirante cercado pela natureza"></figure>
+        <figure class="portrait portrait-three reveal"><img src="assets/parede-tijolos.jpeg" alt="Danielle e Caio sorrindo diante de uma parede de tijolos"></figure>
+        <figure class="landscape landscape-three reveal"><img src="assets/jardim-sorrindo.jpeg" alt="Danielle e Caio sorrindo juntos em um jardim"></figure>
+        <figure class="portrait portrait-four reveal"><img src="assets/jardim-oculos.jpeg" alt="Danielle e Caio juntos em um dia ensolarado"></figure>
+        <figure class="landscape landscape-four reveal"><img src="assets/casal-reflexo.jpeg" alt="O casal sentado em um mirante de vidro"></figure>
+        <figure class="portrait portrait-five reveal"><img src="assets/casal-mirante.jpeg" alt="O casal em um mirante cercado pela natureza"></figure>
+        <figure class="fun landscape-five reveal">
+          <img src="assets/casal-dinossauro.jpeg" alt="O casal fazendo uma selfie divertida com um dinossauro">
+          <figcaption>Amor, aventuras<br>e algumas criaturas inesperadas.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="rsvp section-pad" id="rsvp">
+      <div class="rsvp-intro reveal">
+        <img src="assets/logo-verde.png" alt="" class="rsvp-logo">
+        <p class="eyebrow light">R.S.V.P.</p>
+        <h2>Você vem<br><em>celebrar conosco?</em></h2>
+        <p>Sua presença é o nosso melhor presente. Em breve informaremos a data-limite para confirmação.</p>
+      </div>
+      <form class="rsvp-form reveal" id="rsvpForm">
+        <div class="field full">
+          <label for="guestName">Nome completo</label>
+          <input id="guestName" name="guestName" type="text" placeholder="Digite como está no convite" required autocomplete="name">
+        </div>
+        <fieldset class="field full">
+          <legend>Você poderá comparecer?</legend>
+          <label class="radio"><input type="radio" name="attendance" value="sim" required><span>Sim, estarei lá!</span></label>
+          <label class="radio"><input type="radio" name="attendance" value="nao"><span>Infelizmente não poderei ir</span></label>
+        </fieldset>
+        <div class="field">
+          <label for="companions">Acompanhantes</label>
+          <select id="companions" name="companions">
+            <option value="0">Nenhum</option>
+            <option value="1">1 acompanhante</option>
+            <option value="2">2 acompanhantes</option>
+            <option value="3">3 acompanhantes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="diet">Restrição alimentar</label>
+          <input id="diet" name="diet" type="text" placeholder="Se houver">
+        </div>
+        <div class="field full">
+          <label for="message">Deixe um recado para nós</label>
+          <textarea id="message" name="message" rows="3" placeholder="Vamos adorar ler"></textarea>
+        </div>
+        <button class="button cream" type="submit">Confirmar presença <span>→</span></button>
+        <p class="form-note" id="formNote" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <img src="assets/logo-claro.png" alt="Monograma de Danielle e Caio">
+    <p>Com carinho, esperamos por vocês.</p>
+    <span>21 · 08 · 2027</span>
+  </footer>
+</body>
+</html>
