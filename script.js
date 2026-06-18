@@ -136,12 +136,13 @@ function initGalleryCarousel() {
   const carousel = document.querySelector("#galleryCarousel");
   const track = document.querySelector("#galleryTrack");
   const dotsContainer = document.querySelector("#galleryDots");
+  const gallerySection = document.querySelector(".gallery");
 
-  if (!carousel || !track || !dotsContainer) return;
+  if (!carousel || !track || !dotsContainer || !gallerySection) return;
 
   const slides = Array.from(track.querySelectorAll(".carousel-slide"));
-  const prevButton = carousel.querySelector(".carousel-arrow.prev");
-  const nextButton = carousel.querySelector(".carousel-arrow.next");
+  const prevButton = document.querySelector(".carousel-arrow.prev");
+  const nextButton = document.querySelector(".carousel-arrow.next");
 
   if (!slides.length || !prevButton || !nextButton) return;
 
@@ -199,8 +200,8 @@ function initGalleryCarousel() {
     restartAutoplay();
   });
 
-  carousel.addEventListener("mouseenter", stopAutoplay);
-  carousel.addEventListener("mouseleave", startAutoplay);
+  gallerySection.addEventListener("mouseenter", stopAutoplay);
+  gallerySection.addEventListener("mouseleave", startAutoplay);
 
   track.addEventListener("touchstart", (event) => {
     touchStartX = event.changedTouches[0].clientX;
