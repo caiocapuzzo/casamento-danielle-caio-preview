@@ -1,4 +1,5 @@
 const weddingDate = new Date("2027-08-21T16:30:00-03:00");
+const loveStartDate = new Date("2019-07-19T23:00:00-03:00");
 const pad = (value, size = 2) => String(value).padStart(size, "0");
 
 function updateCountdown() {
@@ -16,6 +17,46 @@ function updateCountdown() {
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+function addMonths(date, monthsToAdd) {
+  const result = new Date(date);
+  const day = result.getDate();
+  result.setDate(1);
+  result.setMonth(result.getMonth() + monthsToAdd);
+  const lastDay = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+  result.setDate(Math.min(day, lastDay));
+  return result;
+}
+
+function getRelationshipTime(start, end) {
+  let cursor = new Date(start);
+  let totalMonths = (end.getFullYear() - cursor.getFullYear()) * 12 + (end.getMonth() - cursor.getMonth());
+
+  if (addMonths(cursor, totalMonths) > end) {
+    totalMonths -= 1;
+  }
+
+  cursor = addMonths(cursor, totalMonths);
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+  const days = Math.floor((end - cursor) / 86400000);
+  cursor = new Date(cursor.getTime() + days * 86400000);
+  const hours = Math.floor((end - cursor) / 3600000);
+
+  return { years, months, days, hours };
+}
+
+function updateLoveCounter() {
+  const now = new Date();
+  const elapsed = getRelationshipTime(loveStartDate, now);
+  document.querySelector("#loveYears").textContent = pad(elapsed.years);
+  document.querySelector("#loveMonths").textContent = pad(elapsed.months);
+  document.querySelector("#loveDays").textContent = pad(elapsed.days);
+  document.querySelector("#loveHours").textContent = pad(elapsed.hours);
+}
+
+updateLoveCounter();
+setInterval(updateLoveCounter, 60000);
 
 const topbar = document.querySelector("#topbar");
 window.addEventListener("scroll", () => topbar.classList.toggle("scrolled", window.scrollY > 40), { passive: true });
