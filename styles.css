@@ -68,12 +68,12 @@ nav a:hover::after { width: 100%; }
 .fine-line { width: 72px; height: 1px; margin: 35px 0; background: var(--olive); }
 .story-copy p { color: #62685a; font-size: 13px; line-height: 2; }
 .story-copy .lead { color: var(--ink); font: 400 23px/1.55 var(--serif); }
-.love-counter { margin-top: 34px; padding: 28px 22px; text-align: center; background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.04)); border: 1px solid rgba(125,134,88,.14); }
+.love-counter { margin-top: 34px; padding: 26px 24px; background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.04)); border: 1px solid rgba(125,134,88,.14); }
 .love-counter-title { margin: 0 0 16px; color: var(--olive-dark) !important; font-size: 10px !important; font-weight: 600 !important; letter-spacing: .24em; line-height: 1.5 !important; text-transform: uppercase; }
-.love-counter-row { margin: 0; gap: clamp(14px, 3vw, 34px); }
-.love-counter-row div { min-width: 68px; }
-.love-counter-row strong { font-size: clamp(36px, 5vw, 58px); }
-.love-counter-row span { font-size: 7px; letter-spacing: .16em; }
+.love-counter-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 14px; margin: 0; }
+.love-counter-grid div { min-width: 0; text-align: center; }
+.love-counter-grid strong { display: block; color: var(--olive-dark); font: 500 clamp(34px, 4vw, 54px)/1 var(--serif); font-variant-numeric: tabular-nums; }
+.love-counter-grid span { display: block; margin-top: 6px; color: #6e745f; font-size: 7px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .love-counter-note { margin: 16px 0 0; color: #777b6a !important; font: italic 16px/1.7 var(--serif) !important; }
 .story-copy .signature { margin-top: 28px; color: var(--olive-dark); font: italic 34px var(--serif); }
 
@@ -217,7 +217,7 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .story { grid-template-columns: 1fr; gap: 55px; }
   .story-photo img { height: min(130vw, 650px); }
   .story-copy { max-width: none; }
-  .love-counter-row { gap: 10px; }
+  .love-counter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 10px; }
   .quote-photo { background-attachment: scroll; }
   .venue-card { grid-template-columns: 1fr; }
   .venue-art { min-height: 520px; }
@@ -244,8 +244,8 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .counter span { font-size: 7px; letter-spacing: .12em; }
   .story-photo::before { inset: -12px 12px 12px -12px; }
   .love-counter { padding: 20px 18px; }
-  .love-counter-row { flex-wrap: wrap; }
-  .love-counter-row div { min-width: 58px; }
+  .love-counter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 8px; }
+  .love-counter-grid strong { font-size: 34px; }
   .quote-band { height: 500px; }
   .venue-art { min-height: 430px; }
   .venue-details h3 { font-size: 48px; }

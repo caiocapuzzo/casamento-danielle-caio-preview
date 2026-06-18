@@ -45,8 +45,12 @@ function getRelationshipTime(start, end) {
   const days = Math.floor((end.getTime() - cursor.getTime()) / 86400000);
   cursor = new Date(cursor.getTime() + days * 86400000);
   const hours = Math.floor((end.getTime() - cursor.getTime()) / 3600000);
+  cursor = new Date(cursor.getTime() + hours * 3600000);
+  const minutes = Math.floor((end.getTime() - cursor.getTime()) / 60000);
+  cursor = new Date(cursor.getTime() + minutes * 60000);
+  const seconds = Math.floor((end.getTime() - cursor.getTime()) / 1000);
 
-  return { years, months, days, hours };
+  return { years, months, days, hours, minutes, seconds };
 }
 
 function updateLoveCounter() {
@@ -54,14 +58,18 @@ function updateLoveCounter() {
   const monthsEl = document.querySelector("#loveMonths");
   const daysEl = document.querySelector("#loveDays");
   const hoursEl = document.querySelector("#loveHours");
+  const minutesEl = document.querySelector("#loveMinutes");
+  const secondsEl = document.querySelector("#loveSeconds");
 
-  if (!yearsEl || !monthsEl || !daysEl || !hoursEl) return;
+  if (!yearsEl || !monthsEl || !daysEl || !hoursEl || !minutesEl || !secondsEl) return;
 
   const elapsed = getRelationshipTime(loveStartDate, new Date());
   yearsEl.textContent = pad(elapsed.years);
   monthsEl.textContent = pad(elapsed.months);
   daysEl.textContent = pad(elapsed.days);
   hoursEl.textContent = pad(elapsed.hours);
+  minutesEl.textContent = pad(elapsed.minutes);
+  secondsEl.textContent = pad(elapsed.seconds);
 }
 
 function initNavigation() {
@@ -127,7 +135,7 @@ function initRsvp() {
 updateCountdown();
 updateLoveCounter();
 setInterval(updateCountdown, 1000);
-setInterval(updateLoveCounter, 60000);
+setInterval(updateLoveCounter, 1000);
 initNavigation();
 initReveal();
 initRsvp();
