@@ -313,6 +313,11 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
     radial-gradient(circle at center, rgba(125,134,88,.08), transparent 65%),
     linear-gradient(180deg, rgba(125,134,88,.05), rgba(125,134,88,.02));
 }
+.gift-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .gift-visual .line-icon {
   width: 74px;
   height: 74px;
