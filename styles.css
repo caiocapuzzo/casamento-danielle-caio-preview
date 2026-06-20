@@ -531,6 +531,36 @@ footer span { font-size: 8px; letter-spacing: .26em; }
 
 @media (max-width: 580px) {
   h2 { font-size: 46px; }
+  .gift-page-hero-shell,
+  .gift-board,
+  .gift-page-cta {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gift-page-hero-copy,
+  .gift-page-hero-note,
+  .gift-board-head,
+  .gift-board-head > div,
+  .gift-board-head p,
+  .gift-sortbar,
+  .gift-page-cta {
+    text-align: center;
+  }
+  .gift-page-hero-copy p,
+  .gift-page-hero-note,
+  .gift-board-head p {
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gift-sortbar {
+    align-items: center;
+  }
+  .gift-sortlabel {
+    width: 100%;
+    text-align: center;
+  }
   .hero h1 { font-size: 71px; line-height: .87; }
   .hero h1 i { display: block; margin: .04em 0; font-size: .55em; }
   .hero-date { margin-top: 38px; }
