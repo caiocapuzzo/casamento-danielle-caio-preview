@@ -11,8 +11,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-weight: 300; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-weight: 300; overflow-x: hidden; }
 body.menu-open { overflow: hidden; }
 img { display: block; width: 100%; }
 a { color: inherit; }
@@ -213,6 +213,16 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 .subpage .mini-mark .logo-light { opacity: 0; }
 .subpage .mini-mark .logo-dark { opacity: 1; }
+.subpage main,
+.subpage section,
+.subpage .gift-page-hero-shell,
+.subpage .gift-board,
+.subpage .gifts-grid,
+.subpage .gift-card,
+.subpage .gift-footer,
+.subpage .gift-page-cta {
+  min-width: 0;
+}
 
 .gift-page-hero {
   padding: 150px max(6vw, 24px) 80px;
@@ -225,6 +235,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   grid-template-columns: 1fr auto;
   gap: 32px;
   align-items: end;
+  width: min(1220px, 100%);
   max-width: 1220px;
   margin: 0 auto;
 }
@@ -267,6 +278,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   background: var(--paper);
 }
 .gift-board {
+  width: min(1220px, 100%);
   max-width: 1220px;
   margin: 0 auto 34px;
   padding: clamp(26px, 4vw, 38px);
@@ -309,6 +321,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   text-transform: uppercase;
 }
 .gift-sortselect {
+  width: min(100%, 320px);
   min-width: 250px;
   min-height: 46px;
   padding: 0 16px;
@@ -430,6 +443,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 
 .gift-page-cta {
+  width: min(1220px, 100%);
   max-width: 1220px;
   margin: 0 auto;
   padding: 34px;
@@ -520,9 +534,9 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .raffle-shell { grid-template-columns: 1fr; }
   .gift-teaser-shell { grid-template-columns: 1fr; }
   .gift-teaser-summary { max-width: none; padding-left: 0; }
-  .gift-page-hero-shell { grid-template-columns: 1fr; }
+  .gift-page-hero-shell { grid-template-columns: 1fr; gap: 24px; }
   .gift-board-head,
-  .gift-sortbar { flex-direction: column; align-items: flex-start; }
+  .gift-sortbar { flex-direction: column; align-items: stretch; }
   .gift-sortselect { width: 100%; min-width: 0; }
   .gifts-grid { grid-template-columns: 1fr 1fr; }
   .carousel-track { min-height: 620px; }
@@ -530,13 +544,23 @@ footer span { font-size: 8px; letter-spacing: .26em; }
 }
 
 @media (max-width: 580px) {
+  .section-pad { padding: 72px 16px; }
   h2 { font-size: 46px; }
+  .topbar { padding: 0 16px; }
+  .mini-mark { width: 92px; height: 56px; }
+  .gift-page-hero {
+    padding: 118px 16px 52px;
+  }
   .gift-page-hero-shell,
   .gift-board,
   .gift-page-cta {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+  }
+  .gift-page-hero-copy h1 {
+    font-size: clamp(42px, 15vw, 62px);
+    line-height: .94;
   }
   .gift-page-hero-copy,
   .gift-page-hero-note,
@@ -554,12 +578,37 @@ footer span { font-size: 8px; letter-spacing: .26em; }
     margin-left: auto;
     margin-right: auto;
   }
+  .gift-page-hero-copy p {
+    font-size: 12px;
+    line-height: 1.85;
+  }
+  .gift-page-hero-note {
+    width: 100%;
+    padding: 18px 16px;
+  }
+  .gift-board {
+    padding: 20px 16px;
+  }
   .gift-sortbar {
     align-items: center;
+    padding: 14px;
   }
   .gift-sortlabel {
     width: 100%;
     text-align: center;
+  }
+  .gift-sortselect { max-width: 100%; }
+  .gift-card,
+  .gift-card h3,
+  .gift-card p,
+  .gift-footer {
+    text-align: center;
+  }
+  .gift-tag {
+    align-self: center;
+  }
+  .gift-footer {
+    align-items: center;
   }
   .hero h1 { font-size: 71px; line-height: .87; }
   .hero h1 i { display: block; margin: .04em 0; font-size: .55em; }
@@ -593,8 +642,7 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-footer { align-items: flex-start; flex-direction: column; }
   .gift-tier-head { display: block; }
   .gift-tier-head p { margin-top: 12px; }
-  .gift-page-hero { padding-top: 122px; }
-  .gift-page-cta { padding: 28px 22px; }
+  .gift-page-cta { padding: 28px 18px; }
   .hero-image { background-position: 53% center; }
   .carousel-track { min-height: 440px; }
   .carousel-slide figcaption { padding: 55px 18px 18px; font-size: 18px; }
