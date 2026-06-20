@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 </head>
 <body class="subpage">
   <header class="topbar" id="topbar">
-    <a class="mini-mark" href="index.html#inicio" aria-label="Voltar ao início">
+    <a class="mini-mark" href="index.html#inicio" aria-label="Voltar ao inÃ­cio">
       <img class="logo-light" src="assets/logo-light-transparent.png" alt="Danielle e Caio">
       <img class="logo-dark" src="assets/logo-olive-transparent.png" alt="">
     </a>
@@ -22,13 +22,13 @@
       <span></span><span></span>
       <span class="sr-only">Abrir menu</span>
     </button>
-    <nav id="navigation" aria-label="Navegação principal">
-      <a href="index.html#inicio">Início</a>
-      <a href="#ate-250">Até 250</a>
-      <a href="#ate-500">Até 500</a>
-      <a href="#ate-1000">Até 1.000</a>
+    <nav id="navigation" aria-label="NavegaÃ§Ã£o principal">
+      <a href="index.html#inicio">InÃ­cio</a>
+      <a href="#ate-250">AtÃ© 250</a>
+      <a href="#ate-500">AtÃ© 500</a>
+      <a href="#ate-1000">AtÃ© 1.000</a>
       <a href="#acima-1000">Acima de 1.000</a>
-      <a class="nav-rsvp" href="index.html#rsvp">Confirmar presença</a>
+      <a class="nav-rsvp" href="index.html#rsvp">Confirmar presenÃ§a</a>
     </nav>
   </header>
 
@@ -38,337 +38,380 @@
         <div class="gift-page-hero-copy">
           <p class="eyebrow">Lista de presentes</p>
           <h1>Presentes com <em>bom humor</em> e carinho de sobra</h1>
-          <p>Nossa lista é simbólica e foi pensada para transformar presentes em contribuições para a nossa vida a dois. Aqui, cada item é uma forma divertida de participar desse novo capítulo — da lua de mel aos mimos da casa nova.</p>
+          <p>Nossa lista Ã© simbÃ³lica e foi pensada para transformar presentes em contribuiÃ§Ãµes para a nossa vida a dois. Aqui, cada item Ã© uma forma divertida de participar desse novo capÃ­tulo â€” da lua de mel aos mimos da casa nova.</p>
         </div>
         <aside class="gift-page-hero-note">
           <strong>Como vai funcionar</strong>
-          <p>Os botões de pagamento serão ligados aos links da InfinitePay. Assim que vocês escolherem o presente, será só clicar e presentear.</p>
+          <p>Os botÃµes de pagamento serÃ£o ligados aos links da InfinitePay. Assim que vocÃªs escolherem o presente, serÃ¡ sÃ³ clicar e presentear.</p>
         </aside>
       </div>
     </section>
 
-    <section class="gift-collections section-pad">
-      <div class="gift-tier" id="ate-250">
-        <div class="gift-tier-head reveal">
+    <section class="gift-collections section-pad" id="presentes">
+      <div class="gift-board reveal visible">
+        <div class="gift-board-head">
           <div>
-            <p class="eyebrow">Faixa 1</p>
-            <h2>Até <em>R$ 250</em></h2>
+            <p class="eyebrow">Lista completa</p>
+            <h2>Escolha pelo <em>coração</em> ou pela ordem que fizer mais sentido</h2>
           </div>
-          <p>Uma seleção leve e divertida para presentear com carinho sem perder o clima descontraído da nossa lista.</p>
+          <p>Reunimos todos os presentes em uma única vitrine para facilitar a busca. Dá para navegar por ordem de preço, relevância ou nome e encontrar rapidinho o que combinar mais com você.</p>
         </div>
-        <div class="gifts-grid">
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-01.png" alt="Primeiro jantar sem olhar o preço do vinho">
-            </div>
-            <span class="gift-tag">Brinde</span>
-            <h3>Primeiro jantar sem olhar o preço do vinho</h3>
-            <p>Uma ajuda elegante para garantir que a nossa primeira noite especial de casados tenha taças cheias e zero arrependimentos.</p>
-            <div class="gift-footer">
-              <strong>R$ 150</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
 
-          <article class="gift-card reveal">
+        <div class="gift-sortbar" id="ordenacao">
+          <label class="gift-sortlabel" for="giftSort">Ordenar presentes</label>
+          <select class="gift-sortselect" id="giftSort" aria-label="Ordenar presentes">
+            <option value="price-asc" selected>Preço: menor para maior</option>
+            <option value="price-desc">Preço: maior para menor</option>
+            <option value="relevance">Relevância</option>
+            <option value="alpha">Ordem alfabética</option>
+          </select>
+        </div>
+
+        <div class="gifts-grid" id="giftGrid">
+<article class="gift-card reveal" data-price="80" data-title="banquinho para a noiva beijar o noivo" data-relevance="1">
             <div class="gift-visual" aria-hidden="true">
               <img src="assets/gift-meme-19.jpg" alt="Banquinho para a noiva beijar o noivo">
             </div>
             <span class="gift-tag">Humor fino</span>
             <h3>Banquinho para a noiva beijar o noivo</h3>
-            <p>Uma contribuição essencial para vencer a diferença de altura com dignidade, romantismo e um empurrãozinho estratégico no beijo dos noivos.</p>
+            <p>Uma contribuiÃ§Ã£o essencial para vencer a diferenÃ§a de altura com dignidade, romantismo e um empurrÃ£ozinho estratÃ©gico no beijo dos noivos.</p>
             <div class="gift-footer">
               <strong>R$ 80</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="90" data-title="almofada para a noiva dormir no colo do noivo" data-relevance="2">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-23.jpg" alt="Um ano de neosoro para a noiva">
+              <img src="assets/gift-meme-26.jpg" alt="Almofada para a noiva dormir no colo do noivo">
             </div>
-            <span class="gift-tag">Autocuidado</span>
-            <h3>Um ano de neosoro para a noiva</h3>
-            <p>Uma contribuição de utilidade pública para manter a respiração da noiva em dia, a paz nasal preservada e o estoque estratégico sempre abastecido.</p>
+            <span class="gift-tag">Conforto</span>
+            <h3>Almofada para a noiva dormir no colo do noivo</h3>
+            <p>Uma contribuiÃ§Ã£o romÃ¢ntica para transformar o colo do noivo em travesseiro oficial, perfeito para cochilos, filmes e noites preguiÃ§osas a dois.</p>
             <div class="gift-footer">
-              <strong>R$ 199</strong>
+              <strong>R$ 90</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="150" data-title="primeiro jantar sem olhar o preã§o do vinho" data-relevance="0">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-02.png" alt="Fundo oficial do iFood da preguiça">
+              <img src="assets/gift-meme-01.png" alt="Primeiro jantar sem olhar o preÃ§o do vinho">
             </div>
-            <span class="gift-tag">Casa nova</span>
-            <h3>Fundo oficial do iFood da preguiça</h3>
-            <p>Contribuição para aqueles dias em que o amor está firme, mas ninguém quer encarar panela, louça e fogão.</p>
+            <span class="gift-tag">Brinde</span>
+            <h3>Primeiro jantar sem olhar o preÃ§o do vinho</h3>
+            <p>Uma ajuda elegante para garantir que a nossa primeira noite especial de casados tenha taÃ§as cheias e zero arrependimentos.</p>
             <div class="gift-footer">
-              <strong>R$ 200</strong>
+              <strong>R$ 150</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="160" data-title="kit ressaca para os noivos" data-relevance="4">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-13.png" alt="Rolo de macarrão para a noiva usar quando precisar">
+              <img src="assets/gift-meme-28.jpg" alt="Kit ressaca para os noivos">
+            </div>
+            <span class="gift-tag">PÃ³s-festa</span>
+            <h3>Kit ressaca para os noivos</h3>
+            <p>Uma ajuda misericordiosa para garantir cafÃ©, Ã¡gua, dignidade e forÃ§a espiritual no dia seguinte Ã  melhor festa das nossas vidas.</p>
+            <div class="gift-footer">
+              <strong>R$ 160</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="180" data-title="antecipaã§ã£o de taxa insalubridade para troca de fralda do futuro filho" data-relevance="8">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-21.jpg" alt="AntecipaÃ§Ã£o de taxa insalubridade para troca de fralda do futuro filho">
             </div>
             <span class="gift-tag">Humor fino</span>
-            <h3>Rolo de macarrão para a noiva usar quando precisar</h3>
-            <p>Uma contribuição preventiva para manter o noivo na linha com carinho, autoridade e, se necessário, um leve reforço culinário.</p>
-            <div class="gift-footer">
-              <strong>R$ 200</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
-
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-21.jpg" alt="Antecipação de taxa insalubridade para troca de fralda do futuro filho">
-            </div>
-            <span class="gift-tag">Humor fino</span>
-            <h3>Antecipação de taxa insalubridade para troca de fralda do futuro filho</h3>
-            <p>Uma ajuda preventiva para preparar o espírito, o estômago e a coragem dos futuros pais diante das missões mais aromáticas da vida adulta.</p>
+            <h3>AntecipaÃ§Ã£o de taxa insalubridade para troca de fralda do futuro filho</h3>
+            <p>Uma ajuda preventiva para preparar o espÃ­rito, o estÃ´mago e a coragem dos futuros pais diante das missÃµes mais aromÃ¡ticas da vida adulta.</p>
             <div class="gift-footer">
               <strong>R$ 180</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="199" data-title="um ano de neosoro para a noiva" data-relevance="3">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-23.jpg" alt="Um ano de neosoro para a noiva">
+            </div>
+            <span class="gift-tag">Autocuidado</span>
+            <h3>Um ano de neosoro para a noiva</h3>
+            <p>Uma contribuiÃ§Ã£o de utilidade pÃºblica para manter a respiraÃ§Ã£o da noiva em dia, a paz nasal preservada e o estoque estratÃ©gico sempre abastecido.</p>
+            <div class="gift-footer">
+              <strong>R$ 199</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="200" data-title="fundo oficial do ifood da preguiã§a" data-relevance="5">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-02.png" alt="Fundo oficial do iFood da preguiÃ§a">
+            </div>
+            <span class="gift-tag">Casa nova</span>
+            <h3>Fundo oficial do iFood da preguiÃ§a</h3>
+            <p>ContribuiÃ§Ã£o para aqueles dias em que o amor estÃ¡ firme, mas ninguÃ©m quer encarar panela, louÃ§a e fogÃ£o.</p>
+            <div class="gift-footer">
+              <strong>R$ 200</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="200" data-title="rolo de macarrã£o para a noiva usar quando precisar" data-relevance="6">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-13.png" alt="Rolo de macarrÃ£o para a noiva usar quando precisar">
+            </div>
+            <span class="gift-tag">Humor fino</span>
+            <h3>Rolo de macarrÃ£o para a noiva usar quando precisar</h3>
+            <p>Uma contribuiÃ§Ã£o preventiva para manter o noivo na linha com carinho, autoridade e, se necessÃ¡rio, um leve reforÃ§o culinÃ¡rio.</p>
+            <div class="gift-footer">
+              <strong>R$ 200</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="230" data-title="chocolate para tpm da noiva" data-relevance="7">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-24.jpg" alt="Chocolate para TPM da noiva">
+            </div>
+            <span class="gift-tag">Autocuidado</span>
+            <h3>Chocolate para TPM da noiva</h3>
+            <p>Uma ajuda emergencial para garantir paz, doÃ§ura e estoque estratÃ©gico de chocolate nos dias em que sÃ³ isso resolve com elegÃ¢ncia.</p>
+            <div class="gift-footer">
+              <strong>R$ 230</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="250" data-title="cota para o caio concordar com a dani" data-relevance="9">
             <div class="gift-visual" aria-hidden="true">
               <img src="assets/gift-meme-03.png" alt="Cota para o Caio concordar com a Dani">
             </div>
             <span class="gift-tag">Humor fino</span>
             <h3>Cota para o Caio concordar com a Dani</h3>
-            <p>Uma contribuição simbólica em apoio aos momentos em que ele vai respirar fundo e admitir: “amor, você estava certa”.</p>
+            <p>Uma contribuiÃ§Ã£o simbÃ³lica em apoio aos momentos em que ele vai respirar fundo e admitir: â€œamor, vocÃª estava certaâ€.</p>
             <div class="gift-footer">
               <strong>R$ 250</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
-        </div>
-      </div>
 
-      <div class="gift-tier" id="ate-500">
-        <div class="gift-tier-head reveal">
-          <div>
-            <p class="eyebrow">Faixa 2</p>
-            <h2>Até <em>R$ 500</em></h2>
-          </div>
-          <p>Presentes para experiências gostosas, mimos da casa e pequenas extravagâncias que fazem a memória ficar ainda melhor.</p>
-        </div>
-        <div class="gifts-grid">
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="270" data-title="kit churrasco para os noivos" data-relevance="12">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-04.png" alt="Reserva estratégica do fondue romântico">
+              <img src="assets/gift-meme-25.jpg" alt="Kit churrasco para os noivos">
+            </div>
+            <span class="gift-tag">Casa nova</span>
+            <h3>Kit churrasco para os noivos</h3>
+            <p>Uma contribuiÃ§Ã£o saborosa para garantir carnes bonitas, brasa certa e muitas noites gostosas com vinho, risadas e repeteco.</p>
+            <div class="gift-footer">
+              <strong>R$ 270</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="300" data-title="reserva estratã©gica do fondue romã¢ntico" data-relevance="10">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-04.png" alt="Reserva estratÃ©gica do fondue romÃ¢ntico">
             </div>
             <span class="gift-tag">Gramado</span>
-            <h3>Reserva estratégica do fondue romântico</h3>
-            <p>Ajuda para garantir um jantar bem clichê, bem gostoso e absolutamente necessário na nossa viagem.</p>
+            <h3>Reserva estratÃ©gica do fondue romÃ¢ntico</h3>
+            <p>Ajuda para garantir um jantar bem clichÃª, bem gostoso e absolutamente necessÃ¡rio na nossa viagem.</p>
             <div class="gift-footer">
               <strong>R$ 300</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="300" data-title="taxa para a noiva nã£o jogar o buquãª para a sua namorada" data-relevance="11">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-14.png" alt="Taxa para a noiva não jogar o buquê para a sua namorada">
+              <img src="assets/gift-meme-14.png" alt="Taxa para a noiva nÃ£o jogar o buquÃª para a sua namorada">
             </div>
             <span class="gift-tag">Humor fino</span>
-            <h3>Taxa para a noiva não jogar o buquê para a sua namorada</h3>
-            <p>Uma ajuda estratégica para preservar relacionamentos, evitar climão no salão e dar alguns meses extras de paz para os casais convidados.</p>
+            <h3>Taxa para a noiva nÃ£o jogar o buquÃª para a sua namorada</h3>
+            <p>Uma ajuda estratÃ©gica para preservar relacionamentos, evitar climÃ£o no salÃ£o e dar alguns meses extras de paz para os casais convidados.</p>
             <div class="gift-footer">
               <strong>R$ 300</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="350" data-title="massagem para o noivo relaxar antes de ver a fatura do cartã£o" data-relevance="13">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-16.png" alt="Massagem para o noivo relaxar antes de ver a fatura do cartão">
+              <img src="assets/gift-meme-16.png" alt="Massagem para o noivo relaxar antes de ver a fatura do cartÃ£o">
             </div>
             <span class="gift-tag">Autocuidado</span>
-            <h3>Massagem para o noivo relaxar antes de ver a fatura do cartão</h3>
-            <p>Uma ajuda terapêutica para o noivo respirar fundo, soltar os ombros e reunir coragem antes do grande momento de abrir o aplicativo do banco.</p>
+            <h3>Massagem para o noivo relaxar antes de ver a fatura do cartÃ£o</h3>
+            <p>Uma ajuda terapÃªutica para o noivo respirar fundo, soltar os ombros e reunir coragem antes do grande momento de abrir o aplicativo do banco.</p>
             <div class="gift-footer">
               <strong>R$ 350</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="400" data-title="panelas anti-dr versã£o premium" data-relevance="15">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-20.jpg" alt="Um mês de academia para os noivos se recuperarem da lua de mel">
-            </div>
-            <span class="gift-tag">Experiência</span>
-            <h3>Um mês de academia para os noivos se recuperarem da lua de mel</h3>
-            <p>Uma contribuição esportiva para ajudar os noivos a reencontrarem o fôlego, a dignidade física e talvez a coragem de subir na balança depois da viagem.</p>
-            <div class="gift-footer">
-              <strong>R$ 400</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
-
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-05.png" alt="Panelas anti-DR versão premium">
+              <img src="assets/gift-meme-05.png" alt="Panelas anti-DR versÃ£o premium">
             </div>
             <span class="gift-tag">Casa nova</span>
-            <h3>Panelas anti-DR versão premium</h3>
-            <p>Para cozinhar juntos com charme, sem transformar a receita em debate técnico sobre tempero, tempo e tampa.</p>
+            <h3>Panelas anti-DR versÃ£o premium</h3>
+            <p>Para cozinhar juntos com charme, sem transformar a receita em debate tÃ©cnico sobre tempero, tempo e tampa.</p>
             <div class="gift-footer">
               <strong>R$ 400</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="400" data-title="um mãªs de academia para os noivos se recuperarem da lua de mel" data-relevance="14">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-20.jpg" alt="Um mÃªs de academia para os noivos se recuperarem da lua de mel">
+            </div>
+            <span class="gift-tag">ExperiÃªncia</span>
+            <h3>Um mÃªs de academia para os noivos se recuperarem da lua de mel</h3>
+            <p>Uma contribuiÃ§Ã£o esportiva para ajudar os noivos a reencontrarem o fÃ´lego, a dignidade fÃ­sica e talvez a coragem de subir na balanÃ§a depois da viagem.</p>
+            <div class="gift-footer">
+              <strong>R$ 400</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="480" data-title="vaquinha para gastos futuros com filhos" data-relevance="17">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-22.jpg" alt="Vaquinha para gastos futuros com filhos">
+            </div>
+            <span class="gift-tag">Futuro</span>
+            <h3>Vaquinha para gastos futuros com filhos</h3>
+            <p>Uma contribuiÃ§Ã£o visionÃ¡ria para ajudar com os futuros custos da expansÃ£o da famÃ­lia, porque fofura vem junto com boletos, fraldas e muitas surpresas.</p>
+            <div class="gift-footer">
+              <strong>R$ 480</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="500" data-title="nosso primeiro fim de semana de puro descanso" data-relevance="16">
             <div class="gift-visual" aria-hidden="true">
               <img src="assets/gift-meme-06.png" alt="Nosso primeiro fim de semana de puro descanso">
             </div>
-            <span class="gift-tag">Experiência</span>
+            <span class="gift-tag">ExperiÃªncia</span>
             <h3>Nosso primeiro fim de semana de puro descanso</h3>
-            <p>Contribuição para aquele momento em que finalmente paramos, respiramos e curtimos o início da vida a dois sem pressa.</p>
+            <p>ContribuiÃ§Ã£o para aquele momento em que finalmente paramos, respiramos e curtimos o inÃ­cio da vida a dois sem pressa.</p>
             <div class="gift-footer">
               <strong>R$ 500</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="550" data-title="capacete para o noivo se proteger da fãºria da noiva" data-relevance="19">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-22.jpg" alt="Vaquinha para gastos futuros com filhos">
-            </div>
-            <span class="gift-tag">Futuro</span>
-            <h3>Vaquinha para gastos futuros com filhos</h3>
-            <p>Uma contribuição visionária para ajudar com os futuros custos da expansão da família, porque fofura vem junto com boletos, fraldas e muitas surpresas.</p>
-            <div class="gift-footer">
-              <strong>R$ 480</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="gift-tier" id="ate-1000">
-        <div class="gift-tier-head reveal">
-          <div>
-            <p class="eyebrow">Faixa 3</p>
-            <h2>Até <em>R$ 1.000</em></h2>
-          </div>
-          <p>Aqui entram aqueles presentes maiores, que já ajudam bastante na viagem, no conforto da casa e nas nossas primeiras grandes memórias.</p>
-        </div>
-        <div class="gifts-grid">
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-07.png" alt="Sofá das visitas e das séries infinitas">
-            </div>
-            <span class="gift-tag">Casa nova</span>
-            <h3>Sofá das visitas e das séries infinitas</h3>
-            <p>Ajuda simbólica para aquele lugar sagrado onde vamos receber amigos, ver filme e fingir que não vamos dormir cedo.</p>
-            <div class="gift-footer">
-              <strong>R$ 650</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
-
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-15.png" alt="Capacete para o noivo se proteger da fúria da noiva">
+              <img src="assets/gift-meme-15.png" alt="Capacete para o noivo se proteger da fÃºria da noiva">
             </div>
             <span class="gift-tag">Humor fino</span>
-            <h3>Capacete para o noivo se proteger da fúria da noiva</h3>
-            <p>Contribuição de segurança doméstica para aqueles momentos em que o noivo testa a sorte, exagera na piada e precisa de proteção extra.</p>
+            <h3>Capacete para o noivo se proteger da fÃºria da noiva</h3>
+            <p>ContribuiÃ§Ã£o de seguranÃ§a domÃ©stica para aqueles momentos em que o noivo testa a sorte, exagera na piada e precisa de proteÃ§Ã£o extra.</p>
             <div class="gift-footer">
               <strong>R$ 550</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="650" data-title="sofã¡ das visitas e das sã©ries infinitas" data-relevance="18">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-17.png" alt="Ajuda para pagar a fatura do cartão da noiva">
+              <img src="assets/gift-meme-07.png" alt="SofÃ¡ das visitas e das sÃ©ries infinitas">
+            </div>
+            <span class="gift-tag">Casa nova</span>
+            <h3>SofÃ¡ das visitas e das sÃ©ries infinitas</h3>
+            <p>Ajuda simbÃ³lica para aquele lugar sagrado onde vamos receber amigos, ver filme e fingir que nÃ£o vamos dormir cedo.</p>
+            <div class="gift-footer">
+              <strong>R$ 650</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="840" data-title="ajuda para pagar a fatura do cartã£o da noiva" data-relevance="20">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-17.png" alt="Ajuda para pagar a fatura do cartÃ£o da noiva">
             </div>
             <span class="gift-tag">Humor fino</span>
-            <h3>Ajuda para pagar a fatura do cartão da noiva</h3>
-            <p>Uma contribuição solidária para transformar susto em esperança, parcelas em poesia e compras felizes em um trauma financeiro um pouco menor.</p>
+            <h3>Ajuda para pagar a fatura do cartÃ£o da noiva</h3>
+            <p>Uma contribuiÃ§Ã£o solidÃ¡ria para transformar susto em esperanÃ§a, parcelas em poesia e compras felizes em um trauma financeiro um pouco menor.</p>
             <div class="gift-footer">
               <strong>R$ 840</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="850" data-title="upgrade estratã©gico do passeio romã¢ntico" data-relevance="21">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-08.png" alt="Upgrade estratégico do passeio romântico">
+              <img src="assets/gift-meme-08.png" alt="Upgrade estratÃ©gico do passeio romÃ¢ntico">
             </div>
             <span class="gift-tag">Lua de mel</span>
-            <h3>Upgrade estratégico do passeio romântico</h3>
-            <p>Uma forcinha para transformar um passeio bonito em um daqueles momentos que rendem história, foto e piada interna.</p>
+            <h3>Upgrade estratÃ©gico do passeio romÃ¢ntico</h3>
+            <p>Uma forcinha para transformar um passeio bonito em um daqueles momentos que rendem histÃ³ria, foto e piada interna.</p>
             <div class="gift-footer">
               <strong>R$ 850</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="1000" data-title="armã¡rio da vida real de adultos" data-relevance="22">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-09.png" alt="Armário da vida real de adultos">
+              <img src="assets/gift-meme-09.png" alt="ArmÃ¡rio da vida real de adultos">
             </div>
             <span class="gift-tag">Casa nova</span>
-            <h3>Armário da vida real de adultos</h3>
-            <p>Porque em algum momento a gente vai precisar parar de improvisar e começar a guardar as coisas com dignidade.</p>
+            <h3>ArmÃ¡rio da vida real de adultos</h3>
+            <p>Porque em algum momento a gente vai precisar parar de improvisar e comeÃ§ar a guardar as coisas com dignidade.</p>
             <div class="gift-footer">
               <strong>R$ 1.000</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
-        </div>
-      </div>
 
-      <div class="gift-tier" id="acima-1000">
-        <div class="gift-tier-head reveal">
-          <div>
-            <p class="eyebrow">Faixa 4</p>
-            <h2>Acima de <em>R$ 1.000</em></h2>
-          </div>
-          <p>Para quem quiser dar uma ajuda maior e marcar presença de um jeito super especial no nosso começo de vida juntos.</p>
-        </div>
-        <div class="gifts-grid">
-          <article class="gift-card reveal">
-            <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-10.png" alt="Noite especial com cara de filme romântico">
-            </div>
-            <span class="gift-tag">Lua de mel</span>
-            <h3>Noite especial com cara de filme romântico</h3>
-            <p>Uma contribuição para um momento caprichado da viagem, do tipo que a gente vai lembrar por muitos e muitos anos.</p>
-            <div class="gift-footer">
-              <strong>R$ 1.500</strong>
-              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
-            </div>
-          </article>
-
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="1200" data-title="um ano de corte de cabelo para o noivo" data-relevance="25">
             <div class="gift-visual" aria-hidden="true">
               <img src="assets/gift-meme-18.png" alt="Um ano de corte de cabelo para o noivo">
             </div>
             <span class="gift-tag">Humor fino</span>
             <h3>Um ano de corte de cabelo para o noivo</h3>
-            <p>Ajuda de manutenção essencial para garantir que o noivo atravesse o primeiro ano de casado minimamente alinhado, aparado e aprovado pela esposa.</p>
+            <p>Ajuda de manutenÃ§Ã£o essencial para garantir que o noivo atravesse o primeiro ano de casado minimamente alinhado, aparado e aprovado pela esposa.</p>
             <div class="gift-footer">
               <strong>R$ 1.200</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="1500" data-title="estoque de fralda para futuro filho ou filha" data-relevance="24">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-11.png" alt="Projeto paz doméstica e conforto absoluto">
+              <img src="assets/gift-meme-27.jpg" alt="Estoque de fralda para futuro filho ou filha">
+            </div>
+            <span class="gift-tag">Futuro</span>
+            <h3>Estoque de fralda para futuro filho ou filha</h3>
+            <p>Uma contribuiÃ§Ã£o de altÃ­ssimo impacto para abastecer o futuro quartel-general da nossa pequena chefia com conforto, praticidade e muitas trocas pela frente.</p>
+            <div class="gift-footer">
+              <strong>R$ 1.500</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="1500" data-title="noite especial com cara de filme romã¢ntico" data-relevance="23">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-10.png" alt="Noite especial com cara de filme romÃ¢ntico">
+            </div>
+            <span class="gift-tag">Lua de mel</span>
+            <h3>Noite especial com cara de filme romÃ¢ntico</h3>
+            <p>Uma contribuiÃ§Ã£o para um momento caprichado da viagem, do tipo que a gente vai lembrar por muitos e muitos anos.</p>
+            <div class="gift-footer">
+              <strong>R$ 1.500</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="2000" data-title="projeto paz domã©stica e conforto absoluto" data-relevance="26">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-11.png" alt="Projeto paz domÃ©stica e conforto absoluto">
             </div>
             <span class="gift-tag">Casa nova</span>
-            <h3>Projeto paz doméstica e conforto absoluto</h3>
+            <h3>Projeto paz domÃ©stica e conforto absoluto</h3>
             <p>Ajuda premium para deixar a casa mais gostosa, mais funcional e com mais chances de evitar pequenas crises decorativas.</p>
             <div class="gift-footer">
               <strong>R$ 2.000</strong>
@@ -376,13 +419,26 @@
             </div>
           </article>
 
-          <article class="gift-card reveal">
+<article class="gift-card reveal" data-price="2490" data-title="spa para os noivos relaxarem" data-relevance="27">
             <div class="gift-visual" aria-hidden="true">
-              <img src="assets/gift-meme-12.png" alt="Empurrão generoso para a nossa vida a dois">
+              <img src="assets/gift-meme-29.jpg" alt="Spa para os noivos relaxarem">
+            </div>
+            <span class="gift-tag">Autocuidado</span>
+            <h3>Spa para os noivos relaxarem</h3>
+            <p>Uma contribuiÃ§Ã£o de altÃ­ssimo nÃ­vel para desligar o mundo, soltar as tensÃµes e deixar os noivos vivendo em modo paz absoluta por algumas horas.</p>
+            <div class="gift-footer">
+              <strong>R$ 2.490</strong>
+              <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
+            </div>
+          </article>
+
+<article class="gift-card reveal" data-price="3000" data-title="empurrã£o generoso para a nossa vida a dois" data-relevance="28">
+            <div class="gift-visual" aria-hidden="true">
+              <img src="assets/gift-meme-12.png" alt="EmpurrÃ£o generoso para a nossa vida a dois">
             </div>
             <span class="gift-tag">Especial</span>
-            <h3>Empurrão generoso para a nossa vida a dois</h3>
-            <p>Um presente super especial para ajudar em vários planos ao mesmo tempo: viagem, casa nova, conforto e memórias bonitas.</p>
+            <h3>EmpurrÃ£o generoso para a nossa vida a dois</h3>
+            <p>Um presente super especial para ajudar em vÃ¡rios planos ao mesmo tempo: viagem, casa nova, conforto e memÃ³rias bonitas.</p>
             <div class="gift-footer">
               <strong>R$ 3.000</strong>
               <a class="button outline gift-button disabled" href="#" aria-disabled="true">Link em breve</a>
@@ -405,5 +461,38 @@
     <p>Danielle & Caio</p>
     <span>21 DE AGOSTO DE 2027</span>
   </footer>
+  <script>
+    document.body.dataset.page = "gifts";
+    document.addEventListener("DOMContentLoaded", () => {
+      const giftGrid = document.getElementById("giftGrid");
+      const giftSort = document.getElementById("giftSort");
+      if (!giftGrid || !giftSort) return;
+
+      const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
+      const cards = Array.from(giftGrid.querySelectorAll(".gift-card"));
+
+      const sortCards = (mode) => {
+        const ordered = [...cards].sort((a, b) => {
+          const priceA = Number(a.dataset.price || 0);
+          const priceB = Number(b.dataset.price || 0);
+          const titleA = a.dataset.title || "";
+          const titleB = b.dataset.title || "";
+          const relevanceA = Number(a.dataset.relevance || 0);
+          const relevanceB = Number(b.dataset.relevance || 0);
+
+          if (mode === "price-desc") return priceB - priceA || collator.compare(titleA, titleB);
+          if (mode === "alpha") return collator.compare(titleA, titleB) || priceA - priceB;
+          if (mode === "relevance") return relevanceA - relevanceB;
+          return priceA - priceB || collator.compare(titleA, titleB);
+        });
+
+        ordered.forEach((card) => giftGrid.appendChild(card));
+      };
+
+      giftSort.addEventListener("change", (event) => sortCards(event.target.value));
+      sortCards(giftSort.value);
+    });
+  </script>
 </body>
 </html>
+
