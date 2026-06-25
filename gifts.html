@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260620b">
-  <script src="script.js?v=20260618d" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260625-store">
+  <script src="script.js?v=20260625-store" defer></script>
 </head>
 <body class="subpage">
   <header class="topbar" id="topbar">
@@ -25,7 +25,8 @@
     <nav id="navigation" aria-label="Navegação principal">
       <a href="index.html#inicio">Início</a>
       <a href="#presentes">Presentes</a>
-      <a href="#ordenacao">Ordenar</a>
+      <a href="#ordenacao">Explorar</a>
+      <a href="#carrinho">Carrinho <span class="nav-cart-count" id="navCartCount">0</span></a>
       <a class="nav-rsvp" href="index.html#rsvp">Confirmar presença</a>
     </nav>
   </header>
@@ -34,13 +35,13 @@
     <section class="gift-page-hero">
       <div class="gift-page-hero-shell reveal visible">
         <div class="gift-page-hero-copy">
-          <p class="eyebrow">Lista de presentes</p>
-          <h1>Presentes com <em>bom humor</em> e carinho de sobra</h1>
-          <p>Nossa lista é simbólica e foi pensada para transformar presentes em contribuições para a nossa vida a dois. Aqui, cada item é uma forma divertida de participar desse novo capítulo — da lua de mel aos mimos da casa nova.</p>
+          <p class="eyebrow">Loja dos noivos</p>
+          <h1>Uma <em>lojinha</em> de presentes para participar do nosso sonho</h1>
+          <p>Nossa seleção foi montada como uma loja leve, divertida e cheia de carinho. Cada presente representa uma contribuição para a nossa vida a dois — da lua de mel aos mimos da casa nova, tudo com a nossa cara.</p>
         </div>
         <aside class="gift-page-hero-note">
-          <strong>Como vai funcionar</strong>
-          <p>Os botões de pagamento serão ligados aos links da InfinitePay. Assim que vocês escolherem o presente, será só clicar e presentear.</p>
+          <strong>Catálogo + carrinho</strong>
+          <p>Agora vocês podem navegar como em uma loja, filtrar, adicionar ao carrinho e organizar a escolha com muito mais praticidade. O próximo passo é ligar esse fluxo ao checkout da InfinitePay.</p>
         </aside>
       </div>
     </section>
@@ -49,22 +50,41 @@
       <div class="gift-board reveal visible">
         <div class="gift-board-head">
           <div>
-            <p class="eyebrow">Lista completa</p>
-            <h2>Escolha pelo <em>coração</em> ou pela ordem que fizer mais sentido</h2>
+            <p class="eyebrow">Catálogo completo</p>
+            <h2>Escolha com calma, <em>adicione ao carrinho</em> e monte seu presente</h2>
           </div>
-          <p>Reunimos todos os presentes em uma única vitrine para facilitar a busca. Dá para navegar por ordem de preço, relevância ou nome e encontrar rapidinho o que combinar mais com você.</p>
+          <p>Reunimos todos os presentes em uma vitrine mais organizada, com busca, filtro por categoria e carrinho lateral. Assim fica mais gostoso de navegar e muito mais intuitivo para presentear.</p>
         </div>
 
-        <div class="gift-sortbar" id="ordenacao">
-          <label class="gift-sortlabel" for="giftSort">Ordenar presentes</label>
-          <select class="gift-sortselect" id="giftSort" aria-label="Ordenar presentes">
-            <option value="price-asc" selected>Preço: menor para maior</option>
-            <option value="price-desc">Preço: maior para menor</option>
-            <option value="relevance">Relevância</option>
-            <option value="alpha">Ordem alfabética</option>
-          </select>
+        <div class="gift-shop-tools" id="ordenacao">
+          <div class="gift-search-shell">
+            <label class="gift-sortlabel" for="giftSearch">Buscar presente</label>
+            <input class="gift-searchinput" id="giftSearch" type="search" placeholder="Ex.: lua de mel, vinho, casa nova..." aria-label="Buscar presente">
+          </div>
+
+          <div class="gift-filter-shell">
+            <label class="gift-sortlabel" for="giftCategory">Categoria</label>
+            <select class="gift-sortselect" id="giftCategory" aria-label="Filtrar por categoria">
+              <option value="all" selected>Todas as categorias</option>
+            </select>
+          </div>
+
+          <div class="gift-filter-shell">
+            <label class="gift-sortlabel" for="giftSort">Ordenar</label>
+            <select class="gift-sortselect" id="giftSort" aria-label="Ordenar presentes">
+              <option value="price-asc" selected>Preço: menor para maior</option>
+              <option value="price-desc">Preço: maior para menor</option>
+              <option value="relevance">Relevância</option>
+              <option value="alpha">Ordem alfabética</option>
+            </select>
+          </div>
+
+          <button class="button outline gift-tools-reset" id="giftResetFilters" type="button">Limpar filtros</button>
+          <button class="button gift-cart-toggle" id="giftCartToggle" type="button">Carrinho <span id="floatingCartCount">0</span></button>
         </div>
 
+        <div class="gift-store-layout">
+        <div class="gift-store-main">
         <div class="gifts-grid" id="giftGrid">
 <article class="gift-card reveal" data-price="80" data-title="banquinho para a noiva beijar o noivo" data-relevance="1">
             <div class="gift-visual" aria-hidden="true">
@@ -807,12 +827,51 @@
             </div>
           </article>
         </div>
+        </div>
+
+        <aside class="gift-cart-panel reveal visible" id="carrinho">
+          <div class="gift-cart-head">
+            <div>
+              <p class="eyebrow">Seu carrinho</p>
+              <h3>Presentes escolhidos</h3>
+            </div>
+            <span class="gift-cart-badge" id="giftCartBadge">0 itens</span>
+          </div>
+
+          <p class="gift-cart-copy">Adicione os presentes que fizerem sentido para você. A estrutura já fica pronta no estilo loja e o checkout da InfinitePay entra na próxima etapa.</p>
+
+          <div class="gift-cart-list" id="giftCartList">
+            <div class="gift-cart-empty" id="giftCartEmpty">
+              <strong>Seu carrinho ainda está vazio</strong>
+              <p>Escolha um presente no catálogo para começar a montar a seleção.</p>
+            </div>
+          </div>
+
+          <div class="gift-cart-summary">
+            <div class="gift-cart-line">
+              <span>Subtotal</span>
+              <strong id="giftCartSubtotal">R$ 0</strong>
+            </div>
+            <div class="gift-cart-line muted">
+              <span>Checkout</span>
+              <span>Integração InfinitePay em preparação</span>
+            </div>
+          </div>
+
+          <div class="gift-cart-actions">
+            <button class="button" id="giftCheckoutButton" type="button">Preparar checkout</button>
+            <button class="button outline" id="giftClearCart" type="button">Esvaziar carrinho</button>
+          </div>
+
+          <p class="gift-cart-note">Nesta etapa, a loja já funciona com carrinho e organização completa. No próximo passo, conectamos o botão final à API oficial da InfinitePay.</p>
+        </aside>
+        </div>
       </div>
 
       <div class="gift-page-cta reveal">
-        <p class="eyebrow">Em breve com links</p>
-        <h2>Quando vocês escolherem, <em>eu conecto tudo</em></h2>
-        <p>Assim que vocês me passarem os links da InfinitePay, eu troco os botões de cada card e deixo a página pronta para presentear de verdade.</p>
+        <p class="eyebrow">Próxima etapa</p>
+        <h2>Loja pronta, <em>checkout no próximo encaixe</em></h2>
+        <p>O visual agora já fica em formato de loja com carrinho. Para transformar isso em compra real, o próximo passo é conectar a API da InfinitePay em um backend seguro.</p>
         <a class="button outline" href="index.html#rsvp">Voltar ao site principal <span>→</span></a>
       </div>
     </section>
@@ -823,38 +882,6 @@
     <p>Danielle & Caio</p>
     <span>21 DE AGOSTO DE 2027</span>
   </footer>
-  <script>
-    document.body.dataset.page = "gifts";
-    document.addEventListener("DOMContentLoaded", () => {
-      const giftGrid = document.getElementById("giftGrid");
-      const giftSort = document.getElementById("giftSort");
-      if (!giftGrid || !giftSort) return;
-
-      const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
-      const cards = Array.from(giftGrid.querySelectorAll(".gift-card"));
-
-      const sortCards = (mode) => {
-        const ordered = [...cards].sort((a, b) => {
-          const priceA = Number(a.dataset.price || 0);
-          const priceB = Number(b.dataset.price || 0);
-          const titleA = a.dataset.title || "";
-          const titleB = b.dataset.title || "";
-          const relevanceA = Number(a.dataset.relevance || 0);
-          const relevanceB = Number(b.dataset.relevance || 0);
-
-          if (mode === "price-desc") return priceB - priceA || collator.compare(titleA, titleB);
-          if (mode === "alpha") return collator.compare(titleA, titleB) || priceA - priceB;
-          if (mode === "relevance") return relevanceA - relevanceB;
-          return priceA - priceB || collator.compare(titleA, titleB);
-        });
-
-        ordered.forEach((card) => giftGrid.appendChild(card));
-      };
-
-      giftSort.addEventListener("change", (event) => sortCards(event.target.value));
-      sortCards(giftSort.value);
-    });
-  </script>
 </body>
 </html>
 
