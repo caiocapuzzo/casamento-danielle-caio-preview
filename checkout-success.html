@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resumo do presente enviado para Danielle & Caio.">
+  <meta name="theme-color" content="#7d8658">
+  <title>Pagamento - Danielle & Caio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260626-checkout">
+  <script src="script.js?v=20260626-checkout" defer></script>
+</head>
+<body class="subpage">
+  <header class="topbar" id="topbar">
+    <a class="mini-mark" href="index.html#inicio" aria-label="Voltar ao início">
+      <img class="logo-light" src="assets/logo-light-transparent.png" alt="Danielle e Caio">
+      <img class="logo-dark" src="assets/logo-olive-transparent.png" alt="">
+    </a>
+    <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navigation">
+      <span></span><span></span>
+      <span class="sr-only">Abrir menu</span>
+    </button>
+    <nav id="navigation" aria-label="Navegação principal">
+      <a href="index.html#inicio">Início</a>
+      <a href="gifts.html#presentes">Presentes</a>
+      <a href="index.html#rsvp">Confirmar presença</a>
+    </nav>
+  </header>
+
+  <main class="checkout-success">
+    <section class="checkout-success-card reveal visible">
+      <p class="eyebrow">Pagamento encaminhado</p>
+      <h1>Seu presente foi <em>enviado para o checkout</em></h1>
+      <p>Obrigada por fazer parte desse momento com a gente. A seleção abaixo mostra o que foi levado para a InfinitePay. Se o pagamento já foi concluído na próxima tela, está tudo certo; se quiser revisar, é só voltar para a loja.</p>
+
+      <div class="checkout-summary" id="checkoutSummary">
+        <div class="checkout-summary-head">
+          <div>
+            <span>Resumo do pedido</span>
+            <strong id="checkoutSubtotal">R$ 0</strong>
+          </div>
+          <span class="checkout-meta" id="checkoutMeta">Carregando resumo...</span>
+        </div>
+        <ul id="checkoutItems"></ul>
+      </div>
+
+      <p>Se você fechou a janela do pagamento sem concluir, pode voltar para a loja e tentar de novo. O carrinho continua guardado por aqui para facilitar.</p>
+
+      <div class="checkout-actions">
+        <a class="button" href="gifts.html#carrinho">Voltar para a loja <span>→</span></a>
+        <a class="button outline" href="index.html#inicio">Ir para o site do casamento <span>→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <img src="assets/logo-light-transparent.png" alt="Monograma de Danielle e Caio">
+    <p>Danielle & Caio</p>
+    <span>21 DE AGOSTO DE 2027</span>
+  </footer>
+
+  <script>
+    (function () {
+      const subtotalEl = document.getElementById("checkoutSubtotal");
+      const metaEl = document.getElementById("checkoutMeta");
+      const listEl = document.getElementById("checkoutItems");
+      const params = new URLSearchParams(window.location.search);
+
+      function formatCurrency(value) {
+        return new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+          maximumFractionDigits: 0
+        }).format(value || 0);
+      }
+
+      let order = null;
+      try {
+        order = JSON.parse(localStorage.getItem("dc-last-infinitepay-order") || "null");
+      } catch {}
+
+      if (!order || !Array.isArray(order.items) || !order.items.length) {
+        subtotalEl.textContent = "R$ 0";
+        metaEl.textContent = "Nenhum pedido recente encontrado neste navegador.";
+        listEl.innerHTML = "<li><div><strong>Ainda não encontramos um pedido recente</strong><span>Você pode voltar para a loja e montar o carrinho novamente.</span></div><b>—</b></li>";
+        return;
+      }
+
+      subtotalEl.textContent = formatCurrency(order.subtotal);
+      const when = order.createdAt ? new Date(order.createdAt).toLocaleString("pt-BR") : "agora";
+      const orderRef = params.get("order_nsu") || order.orderId || "sem referência";
+      metaEl.textContent = `Pedido ${orderRef} · preparado em ${when}`;
+
+      listEl.innerHTML = order.items.map((item) => `
+        <li>
+          <div>
+            <strong>${item.title}</strong>
+            <span>${item.quantity} × ${formatCurrency(item.price)}${item.category ? ` · ${item.category}` : ""}</span>
+          </div>
+          <b>${formatCurrency(item.price * item.quantity)}</b>
+        </li>
+      `).join("");
+    }());
+  </script>
+</body>
+</html>

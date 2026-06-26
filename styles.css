@@ -487,12 +487,17 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   white-space: nowrap;
 }
 .gift-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   min-width: 0;
+  max-width: 100%;
   padding-inline: 14px;
   gap: 10px;
   text-align: center;
   line-height: 1.35;
+  word-break: break-word;
 }
 .gift-button.disabled {
   opacity: .62;
@@ -678,6 +683,47 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   gap: 10px;
   margin: 18px 0 16px;
 }
+.gift-cart-actions .button {
+  width: 100%;
+  max-width: 100%;
+}
+.gift-checkout-fields {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+.gift-checkout-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.gift-checkout-field label {
+  color: var(--olive-dark);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.gift-checkout-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(125,134,88,.18);
+  background: rgba(255,255,255,.9);
+  color: var(--ink);
+  font: 400 12px var(--sans);
+}
+.gift-checkout-field input::placeholder {
+  color: #8b917f;
+}
+.gift-checkout-field input:focus {
+  border-color: rgba(125,134,88,.42);
+}
+.button:disabled,
+.button[disabled] {
+  opacity: .72;
+  cursor: wait;
+}
 
 .gift-page-cta {
   width: min(1440px, 100%);
@@ -696,6 +742,81 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   font-size: 12px;
   line-height: 1.9;
   text-align: center;
+}
+.checkout-success {
+  min-height: calc(100vh - 88px);
+  display: grid;
+  place-items: center;
+  padding: 130px 24px 80px;
+}
+.checkout-success-card {
+  width: min(980px, 100%);
+  padding: clamp(28px, 4vw, 44px);
+  background: rgba(251,249,243,.92);
+  border: 1px solid rgba(125,134,88,.16);
+  box-shadow: 0 24px 70px rgba(68,74,54,.08);
+}
+.checkout-success-card > p:last-of-type {
+  max-width: 720px;
+  margin-bottom: 0;
+}
+.checkout-summary {
+  margin: 28px 0;
+  padding: 22px;
+  border: 1px solid rgba(125,134,88,.16);
+  background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.03));
+}
+.checkout-summary-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.checkout-summary-head strong {
+  color: var(--olive-dark);
+  font: 500 42px/1 var(--serif);
+}
+.checkout-summary-head span,
+.checkout-meta,
+.checkout-summary li span {
+  color: #68705d;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.checkout-summary ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checkout-summary li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(125,134,88,.12);
+}
+.checkout-summary li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.checkout-summary li strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font: 500 24px/1.05 var(--serif);
+}
+.checkout-summary li b {
+  color: var(--olive-dark);
+  font: 500 26px/1 var(--serif);
+}
+.checkout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
 }
 
 .gallery { max-width: 1400px; margin: auto; }
@@ -897,6 +1018,26 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-tier-head { display: block; }
   .gift-tier-head p { margin-top: 12px; }
   .gift-page-cta { padding: 28px 18px; }
+  .checkout-success {
+    padding: 112px 16px 64px;
+  }
+  .checkout-summary {
+    padding: 18px 16px;
+  }
+  .checkout-summary-head,
+  .checkout-summary li {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+  .checkout-summary-head {
+    display: grid;
+  }
+  .checkout-actions {
+    flex-direction: column;
+  }
+  .checkout-actions .button {
+    width: 100%;
+  }
   .hero-image { background-position: 53% center; }
   .carousel-track { min-height: 440px; }
   .carousel-slide figcaption { padding: 55px 18px 18px; font-size: 18px; }

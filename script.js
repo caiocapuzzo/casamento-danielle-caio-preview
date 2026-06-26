@@ -245,6 +245,18 @@ function slugify(value) {
     .replace(/(^-|-$)/g, "");
 }
 
+function getSiteBaseUrl() {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  url.pathname = url.pathname.replace(/[^/]*$/, "");
+  return url;
+}
+
+function generateOrderId() {
+  return `dc-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 function initGiftStore() {
   if (!document.querySelector("#giftGrid")) return;
 
@@ -263,11 +275,17 @@ function initGiftStore() {
   const giftClearCart = document.querySelector("#giftClearCart");
   const giftCheckoutButton = document.querySelector("#giftCheckoutButton");
   const giftCartPanel = document.querySelector("#carrinho");
+  const giftBuyerName = document.querySelector("#giftBuyerName");
+  const giftBuyerEmail = document.querySelector("#giftBuyerEmail");
+  const giftBuyerPhone = document.querySelector("#giftBuyerPhone");
 
   if (!giftSort || !giftCategory || !giftSearch || !giftCartList || !giftCartSubtotal || !giftCartBadge || !giftCartToggle || !giftClearCart || !giftCheckoutButton || !giftCartPanel) return;
 
   const storageKey = "dc-gift-cart-v1";
+  const checkoutDraftKey = "dc-gift-checkout-draft";
   const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
+  const infinitepayHandle = document.body.dataset.infinitepayHandle?.trim() || "";
+  const siteBase = getSiteBaseUrl();
   const cards = Array.from(giftGrid.querySelectorAll(".gift-card"));
   const noResults = document.createElement("div");
   noResults.className = "gift-no-results";
@@ -309,9 +327,25 @@ function initGiftStore() {
   });
 
   let cart = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  try {
+    const savedBuyer = JSON.parse(localStorage.getItem(checkoutDraftKey) || "{}");
+    if (giftBuyerName) giftBuyerName.value = savedBuyer.name || "";
+    if (giftBuyerEmail) giftBuyerEmail.value = savedBuyer.email || "";
+    if (giftBuyerPhone) giftBuyerPhone.value = savedBuyer.phone || "";
+  } catch {}
 
   function persistCart() {
     localStorage.setItem(storageKey, JSON.stringify(cart));
+  }
+
+  function persistBuyerData() {
+    const buyer = {
+      name: giftBuyerName?.value.trim() || "",
+      email: giftBuyerEmail?.value.trim() || "",
+      phone: giftBuyerPhone?.value.trim() || ""
+    };
+    localStorage.setItem(checkoutDraftKey, JSON.stringify(buyer));
+    return buyer;
   }
 
   function getCartEntries() {
@@ -460,21 +494,81 @@ function initGiftStore() {
   giftCheckoutButton.addEventListener("click", async () => {
     const entries = getCartEntries();
     if (!entries.length) {
-      window.alert("Seu carrinho está vazio. Escolha pelo menos um presente para continuar.");
+      window.alert("Seu carrinho est? vazio. Escolha pelo menos um presente para continuar.");
       return;
     }
 
-    const summary = entries
-      .map((item) => `• ${item.title} x${item.quantity} — ${formatCurrency(item.price * item.quantity)}`)
-      .join("\n");
+    if (!infinitepayHandle) {
+      window.alert("Falta preencher a InfiniteTag da conta que vai receber os presentes. Assim que esse dado for adicionado no site, o checkout abre normalmente.");
+      return;
+    }
 
-    const message = `Carrinho preparado:\n\n${summary}\n\nSubtotal: ${formatCurrency(entries.reduce((sum, item) => sum + item.price * item.quantity, 0))}\n\nPróximo passo: conectar este carrinho ao checkout da InfinitePay via backend seguro.`;
+    const buyer = persistBuyerData();
+    const subtotal = entries.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const orderId = generateOrderId();
+    const redirectUrl = new URL("checkout-success.html", siteBase).toString();
+    const payload = {
+      handle: infinitepayHandle,
+      redirect_url: redirectUrl,
+      order_nsu: orderId,
+      items: entries.map((item) => ({
+        quantity: item.quantity,
+        price: Math.round(item.price * 100),
+        description: item.title
+      }))
+    };
+
+    if (buyer.name) payload.name = buyer.name;
+    if (buyer.email) payload.email = buyer.email;
+    if (buyer.phone) payload.phone = buyer.phone;
+
+    localStorage.setItem("dc-last-infinitepay-order", JSON.stringify({
+      orderId,
+      subtotal,
+      createdAt: new Date().toISOString(),
+      buyer,
+      items: entries.map((item) => ({
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        image: item.image,
+        price: item.price,
+        quantity: item.quantity
+      }))
+    }));
+
+    const previousLabel = giftCheckoutButton.textContent;
+    giftCheckoutButton.disabled = true;
+    giftCheckoutButton.textContent = "Abrindo checkout...";
 
     try {
-      await navigator.clipboard.writeText(message);
-      window.alert("Carrinho preparado e resumo copiado. A próxima etapa é ligar esse fluxo ao checkout da InfinitePay.");
-    } catch {
-      window.alert(message);
+      const response = await fetch("https://api.checkout.infinitepay.io/links", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const detail = data?.message || data?.error || "N?o foi poss?vel gerar o checkout agora.";
+        throw new Error(detail);
+      }
+
+      const checkoutUrl = data?.link || data?.url || data?.checkout_url;
+      if (!checkoutUrl) {
+        throw new Error("A InfinitePay respondeu sem retornar o link do checkout.");
+      }
+
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Erro inesperado ao abrir o checkout.";
+      window.alert(`N?o conseguimos abrir o pagamento agora.
+
+${message}`);
+      giftCheckoutButton.disabled = false;
+      giftCheckoutButton.textContent = previousLabel;
     }
   });
 
