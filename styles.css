@@ -235,8 +235,8 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   grid-template-columns: 1fr auto;
   gap: 32px;
   align-items: end;
-  width: min(1220px, 100%);
-  max-width: 1220px;
+  width: min(1440px, 100%);
+  max-width: 1440px;
   margin: 0 auto;
 }
 .gift-page-hero-copy h1 {
@@ -278,8 +278,8 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   background: var(--paper);
 }
 .gift-board {
-  width: min(1220px, 100%);
-  max-width: 1220px;
+  width: min(1440px, 100%);
+  max-width: 1440px;
   margin: 0 auto 34px;
   padding: clamp(26px, 4vw, 38px);
   background: rgba(251,249,243,.78);
@@ -386,8 +386,8 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 .gift-store-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 22px;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 28px;
   align-items: start;
 }
 .gift-store-main { min-width: 0; }
@@ -416,13 +416,13 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .gifts-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 22px;
 }
 .gift-card {
   display: flex;
   flex-direction: column;
   min-height: 500px;
-  padding: 24px 22px 22px;
+  padding: 24px 20px 20px;
   background: rgba(251,249,243,.86);
   border: 1px solid rgba(125,134,88,.14);
   box-shadow: 0 16px 42px rgba(68,74,54,.06);
@@ -474,9 +474,9 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   line-height: 1.9;
 }
 .gift-footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   margin-top: auto;
   padding-top: 24px;
@@ -486,7 +486,14 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   font: 500 38px/1 var(--serif);
   white-space: nowrap;
 }
-.gift-button { min-width: 154px; }
+.gift-button {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 14px;
+  gap: 10px;
+  text-align: center;
+  line-height: 1.35;
+}
 .gift-button.disabled {
   opacity: .62;
   pointer-events: none;
@@ -521,6 +528,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .gift-cart-panel {
   position: sticky;
   top: 104px;
+  width: 100%;
   padding: 24px;
   background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.03));
   border: 1px solid rgba(125,134,88,.16);
@@ -672,8 +680,8 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 
 .gift-page-cta {
-  width: min(1220px, 100%);
-  max-width: 1220px;
+  width: min(1440px, 100%);
+  max-width: 1440px;
   margin: 0 auto;
   padding: 34px;
   background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.04));
@@ -768,7 +776,7 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-sortbar { flex-direction: column; align-items: stretch; }
   .gift-shop-tools { grid-template-columns: 1fr 1fr; }
   .gift-sortselect { width: 100%; min-width: 0; }
-  .gift-store-layout { grid-template-columns: 1fr; }
+  .gift-store-layout { grid-template-columns: 1fr; gap: 22px; }
   .gift-cart-panel { position: static; }
   .gifts-grid { grid-template-columns: 1fr 1fr; }
   .carousel-track { min-height: 620px; }
@@ -841,9 +849,7 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-tag {
     align-self: center;
   }
-  .gift-footer {
-    align-items: center;
-  }
+  .gift-footer { grid-template-columns: 1fr; align-items: center; }
   .gift-cart-head,
   .gift-cart-line {
     text-align: left;
@@ -887,7 +893,7 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gifts-grid { grid-template-columns: 1fr; }
   .gift-card { min-height: auto; }
   .gift-card h3 { font-size: 27px; }
-  .gift-footer { align-items: flex-start; flex-direction: column; }
+  .gift-footer { grid-template-columns: 1fr; align-items: flex-start; }
   .gift-tier-head { display: block; }
   .gift-tier-head p { margin-top: 12px; }
   .gift-page-cta { padding: 28px 18px; }
