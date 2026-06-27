@@ -285,6 +285,10 @@ function initGiftStore() {
   const checkoutDraftKey = "dc-gift-checkout-draft";
   const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
   const infinitepayHandle = document.body.dataset.infinitepayHandle?.trim() || "";
+  const defaultCheckoutEndpoint = window.location.hostname && !window.location.hostname.endsWith("github.io")
+    ? "/api/create-checkout"
+    : "";
+  const checkoutEndpoint = document.body.dataset.checkoutEndpoint?.trim() || defaultCheckoutEndpoint;
   const siteBase = getSiteBaseUrl();
   const cards = Array.from(giftGrid.querySelectorAll(".gift-card"));
   const noResults = document.createElement("div");
@@ -491,10 +495,52 @@ function initGiftStore() {
     renderCart();
   });
 
+  const getInfinitePayDirectUrl = (payload, subtotal) => {
+    const checkoutUrl = new URL(`https://checkout.infinitepay.io/${encodeURIComponent(payload.handle)}`);
+    const totalItems = payload.items.reduce((sum, item) => sum + item.quantity, 0);
+    const description = payload.items.length === 1
+      ? payload.items[0].description
+      : `Lista de presentes Danielle & Caio - ${totalItems} itens`;
+
+    checkoutUrl.searchParams.set("amount", String(Math.round(subtotal * 100)));
+    checkoutUrl.searchParams.set("description", description.slice(0, 140));
+    checkoutUrl.searchParams.set("order_nsu", payload.order_nsu);
+    checkoutUrl.searchParams.set("redirect_url", payload.redirect_url);
+    return checkoutUrl.toString();
+  };
+
+  const requestInfinitePayCheckout = async (payload) => {
+    if (!checkoutEndpoint) return null;
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 9000);
+
+    try {
+      const response = await fetch(checkoutEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const detail = data?.message || data?.error || "Nao foi possivel gerar o checkout pelo endpoint intermediario.";
+        throw new Error(detail);
+      }
+
+      return data?.link || data?.url || data?.checkout_url || null;
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
+  };
+
   giftCheckoutButton.addEventListener("click", async () => {
     const entries = getCartEntries();
     if (!entries.length) {
-      window.alert("Seu carrinho est? vazio. Escolha pelo menos um presente para continuar.");
+      window.alert("Seu carrinho esta vazio. Escolha pelo menos um presente para continuar.");
       return;
     }
 
@@ -542,29 +588,21 @@ function initGiftStore() {
     giftCheckoutButton.textContent = "Abrindo checkout...";
 
     try {
-      const response = await fetch("https://api.checkout.infinitepay.io/links", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const detail = data?.message || data?.error || "N?o foi poss?vel gerar o checkout agora.";
-        throw new Error(detail);
-      }
-
-      const checkoutUrl = data?.link || data?.url || data?.checkout_url;
+      let checkoutUrl = await requestInfinitePayCheckout(payload);
       if (!checkoutUrl) {
-        throw new Error("A InfinitePay respondeu sem retornar o link do checkout.");
+        checkoutUrl = getInfinitePayDirectUrl(payload, subtotal);
       }
 
       window.location.href = checkoutUrl;
     } catch (error) {
+      const fallbackUrl = getInfinitePayDirectUrl(payload, subtotal);
+      if (fallbackUrl) {
+        window.location.href = fallbackUrl;
+        return;
+      }
+
       const message = error instanceof Error ? error.message : "Erro inesperado ao abrir o checkout.";
-      window.alert(`N?o conseguimos abrir o pagamento agora.
+      window.alert(`Nao conseguimos abrir o pagamento agora.
 
 ${message}`);
       giftCheckoutButton.disabled = false;
