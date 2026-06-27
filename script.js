@@ -495,22 +495,10 @@ function initGiftStore() {
     renderCart();
   });
 
-  const getInfinitePayDirectUrl = (payload, subtotal) => {
-    const checkoutUrl = new URL(`https://checkout.infinitepay.io/${encodeURIComponent(payload.handle)}`);
-    const totalItems = payload.items.reduce((sum, item) => sum + item.quantity, 0);
-    const description = payload.items.length === 1
-      ? payload.items[0].description
-      : `Lista de presentes Danielle & Caio - ${totalItems} itens`;
-
-    checkoutUrl.searchParams.set("amount", String(Math.round(subtotal * 100)));
-    checkoutUrl.searchParams.set("description", description.slice(0, 140));
-    checkoutUrl.searchParams.set("order_nsu", payload.order_nsu);
-    checkoutUrl.searchParams.set("redirect_url", payload.redirect_url);
-    return checkoutUrl.toString();
-  };
-
   const requestInfinitePayCheckout = async (payload) => {
-    if (!checkoutEndpoint) return null;
+    if (!checkoutEndpoint) {
+      throw new Error("O checkout real da InfinitePay precisa de um endpoint intermediario. O GitHub Pages nao executa backend, entao precisamos publicar esta loja em Vercel/Netlify ou apontar para uma API publicada.");
+    }
 
     const controller = new AbortController();
     const timeoutId = window.setTimeout(() => controller.abort(), 9000);
@@ -531,7 +519,12 @@ function initGiftStore() {
         throw new Error(detail);
       }
 
-      return data?.link || data?.url || data?.checkout_url || null;
+      const checkoutUrl = data?.link || data?.url || data?.checkout_url;
+      if (!checkoutUrl) {
+        throw new Error("A InfinitePay respondeu sem retornar o link do checkout.");
+      }
+
+      return checkoutUrl;
     } finally {
       window.clearTimeout(timeoutId);
     }
@@ -588,19 +581,9 @@ function initGiftStore() {
     giftCheckoutButton.textContent = "Abrindo checkout...";
 
     try {
-      let checkoutUrl = await requestInfinitePayCheckout(payload);
-      if (!checkoutUrl) {
-        checkoutUrl = getInfinitePayDirectUrl(payload, subtotal);
-      }
-
+      const checkoutUrl = await requestInfinitePayCheckout(payload);
       window.location.href = checkoutUrl;
     } catch (error) {
-      const fallbackUrl = getInfinitePayDirectUrl(payload, subtotal);
-      if (fallbackUrl) {
-        window.location.href = fallbackUrl;
-        return;
-      }
-
       const message = error instanceof Error ? error.message : "Erro inesperado ao abrir o checkout.";
       window.alert(`Nao conseguimos abrir o pagamento agora.
 
