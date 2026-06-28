@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260626-infinitepay">
-  <script src="script.js?v=20260627-infinitepay-backend" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260627-store-review">
+  <script src="script.js?v=20260627-store-review" defer></script>
 </head>
 <body class="subpage" data-infinitepay-handle="caio-capuzzo">
   <header class="topbar" id="topbar">
@@ -25,6 +25,7 @@
     <nav id="navigation" aria-label="Navegação principal">
       <a href="index.html#inicio">Início</a>
       <a href="#presentes">Presentes</a>
+      <a href="rifa.html">Rifa solidária</a>
       <a href="#ordenacao">Explorar</a>
       <a href="#carrinho">Carrinho <span class="nav-cart-count" id="navCartCount">0</span></a>
       <a class="nav-rsvp" href="index.html#rsvp">Confirmar presença</a>
@@ -35,13 +36,13 @@
     <section class="gift-page-hero">
       <div class="gift-page-hero-shell reveal visible">
         <div class="gift-page-hero-copy">
-          <p class="eyebrow">Loja dos noivos</p>
-          <h1>Uma <em>lojinha</em> de presentes para participar do nosso sonho</h1>
-          <p>Nossa seleção foi montada como uma loja leve, divertida e cheia de carinho. Cada presente representa uma contribuição para a nossa vida a dois — da lua de mel aos mimos da casa nova, tudo com a nossa cara.</p>
+          <p class="eyebrow">Lista de presentes</p>
+          <h1>Uma página só para os <em>presentes</em></h1>
+          <p>Criamos uma lista simbólica, com presentes divertidos e contribuições especiais para quem quiser participar da nossa vida a dois de um jeito leve, bonito e cheio de carinho.</p>
         </div>
         <aside class="gift-page-hero-note">
-          <strong>Catálogo + checkout</strong>
-          <p>Agora vocês podem navegar como em uma loja, filtrar, adicionar ao carrinho e seguir direto para o checkout da InfinitePay. A finalização acontece em ambiente seguro, com Pix e cartão.</p>
+          <strong>Escolha com calma</strong>
+          <p>Agora vocês podem navegar pelo catálogo, filtrar, adicionar ao carrinho e seguir direto para o checkout da InfinitePay. A finalização acontece em ambiente seguro, com Pix e cartão.</p>
         </aside>
       </div>
     </section>
@@ -80,7 +81,11 @@
           </div>
 
           <button class="button outline gift-tools-reset" id="giftResetFilters" type="button">Limpar filtros</button>
-          <button class="button gift-cart-toggle" id="giftCartToggle" type="button">Carrinho <span id="floatingCartCount">0</span></button>
+          <button class="button gift-cart-toggle" id="giftCartToggle" type="button" aria-expanded="false" aria-controls="carrinho">Carrinho <span id="floatingCartCount">0</span></button>
+        </div>
+
+        <div class="gift-store-meta">
+          <p class="gift-results-summary" id="giftResultsSummary" aria-live="polite">Carregando presentes...</p>
         </div>
 
         <div class="gift-store-layout">
@@ -861,15 +866,15 @@
           <div class="gift-checkout-fields">
             <div class="gift-checkout-field">
               <label for="giftBuyerName">Seu nome</label>
-              <input id="giftBuyerName" type="text" placeholder="Como você quer aparecer no presente">
+              <input id="giftBuyerName" type="text" placeholder="Como você quer aparecer no presente" autocomplete="name">
             </div>
             <div class="gift-checkout-field">
               <label for="giftBuyerEmail">Seu e-mail</label>
-              <input id="giftBuyerEmail" type="email" placeholder="nome@exemplo.com">
+              <input id="giftBuyerEmail" type="email" placeholder="nome@exemplo.com" autocomplete="email" inputmode="email">
             </div>
             <div class="gift-checkout-field">
               <label for="giftBuyerPhone">Seu WhatsApp</label>
-              <input id="giftBuyerPhone" type="tel" placeholder="(17) 99999-9999">
+              <input id="giftBuyerPhone" type="tel" placeholder="(17) 99999-9999" autocomplete="tel" inputmode="tel">
             </div>
           </div>
 

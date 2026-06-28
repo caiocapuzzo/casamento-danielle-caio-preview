@@ -14,7 +14,7 @@
 html { scroll-behavior: smooth; overflow-x: hidden; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-weight: 300; overflow-x: hidden; }
 body.menu-open { overflow: hidden; }
-img { display: block; width: 100%; }
+img { display: block; width: 100%; height: auto; }
 a { color: inherit; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .section-pad { padding: 110px max(6vw, 24px); }
@@ -334,10 +334,10 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 .gift-shop-tools {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(180px, .7fr)) auto auto;
+  grid-template-columns: minmax(240px, 1.35fr) repeat(2, minmax(185px, .72fr)) auto auto;
   gap: 14px;
   align-items: end;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .gift-search-shell,
 .gift-filter-shell {
@@ -386,11 +386,32 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 .gift-store-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
   gap: 28px;
   align-items: start;
 }
 .gift-store-main { min-width: 0; }
+.gift-store-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.gift-results-summary {
+  margin: 0;
+  color: #666c5d;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.gift-results-summary strong {
+  display: block;
+  color: var(--olive-dark);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
 .gift-tier {
   max-width: 1220px;
   margin: 0 auto 34px;
@@ -415,13 +436,13 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 }
 .gifts-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 22px;
 }
 .gift-card {
   display: flex;
   flex-direction: column;
-  min-height: 500px;
+  min-height: 100%;
   padding: 24px 20px 20px;
   background: rgba(251,249,243,.86);
   border: 1px solid rgba(125,134,88,.14);
@@ -485,6 +506,7 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   color: var(--olive-dark);
   font: 500 38px/1 var(--serif);
   white-space: nowrap;
+  min-width: 0;
 }
 .gift-button {
   display: inline-flex;
@@ -493,11 +515,15 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   width: 100%;
   min-width: 0;
   max-width: 100%;
+  min-height: 48px;
   padding-inline: 14px;
   gap: 10px;
   text-align: center;
   line-height: 1.35;
-  word-break: break-word;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  align-self: stretch;
 }
 .gift-button.disabled {
   opacity: .62;
@@ -534,6 +560,9 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
   position: sticky;
   top: 104px;
   width: 100%;
+  max-height: calc(100vh - 128px);
+  overflow: auto;
+  scrollbar-gutter: stable;
   padding: 24px;
   background: linear-gradient(180deg, rgba(125,134,88,.08), rgba(125,134,88,.03));
   border: 1px solid rgba(125,134,88,.16);
@@ -896,9 +925,14 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-board-head,
   .gift-sortbar { flex-direction: column; align-items: stretch; }
   .gift-shop-tools { grid-template-columns: 1fr 1fr; }
+  .gift-store-meta { flex-direction: column; align-items: flex-start; }
   .gift-sortselect { width: 100%; min-width: 0; }
   .gift-store-layout { grid-template-columns: 1fr; gap: 22px; }
-  .gift-cart-panel { position: static; }
+  .gift-cart-panel {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
   .gifts-grid { grid-template-columns: 1fr 1fr; }
   .carousel-track { min-height: 620px; }
   .rsvp { grid-template-columns: 1fr; }
@@ -928,13 +962,15 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .gift-board-head,
   .gift-board-head > div,
   .gift-board-head p,
+  .gift-store-meta,
   .gift-sortbar,
   .gift-page-cta {
     text-align: center;
   }
   .gift-page-hero-copy p,
   .gift-page-hero-note,
-  .gift-board-head p {
+  .gift-board-head p,
+  .gift-store-meta p {
     max-width: none;
     margin-left: auto;
     margin-right: auto;
@@ -955,7 +991,24 @@ footer span { font-size: 8px; letter-spacing: .26em; }
     padding: 14px;
   }
   .gift-shop-tools { grid-template-columns: 1fr; }
+  .gift-store-meta { align-items: center; }
   .gift-sortlabel {
+    width: 100%;
+    text-align: center;
+  }
+  .gift-card {
+    padding: 18px 16px 16px;
+  }
+  .gift-card h3 {
+    font-size: 26px;
+  }
+  .gift-footer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .gift-footer strong,
+  .gift-footer .gift-button {
     width: 100%;
     text-align: center;
   }

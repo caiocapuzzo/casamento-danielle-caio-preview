@@ -265,6 +265,7 @@ function initGiftStore() {
   const giftCategory = document.querySelector("#giftCategory");
   const giftSearch = document.querySelector("#giftSearch");
   const giftResetFilters = document.querySelector("#giftResetFilters");
+  const giftResultsSummary = document.querySelector("#giftResultsSummary");
   const giftCartList = document.querySelector("#giftCartList");
   const giftCartEmpty = document.querySelector("#giftCartEmpty");
   const giftCartSubtotal = document.querySelector("#giftCartSubtotal");
@@ -297,17 +298,35 @@ function initGiftStore() {
   noResults.innerHTML = "<strong>Nenhum presente encontrado</strong><p>Tente ajustar a busca ou limpar os filtros para ver mais opções.</p>";
   giftGrid.after(noResults);
 
+  function getSearchTokens(value) {
+    return slugify(value).split("-").filter(Boolean);
+  }
+
+  function getSortLabel(mode) {
+    if (mode === "price-desc") return "preço: maior para menor";
+    if (mode === "alpha") return "ordem alfabética";
+    if (mode === "relevance") return "relevância";
+    return "preço: menor para maior";
+  }
+
   const catalog = cards.map((card, index) => {
     const title = card.querySelector("h3")?.textContent?.trim() || `Presente ${index + 1}`;
     const description = card.querySelector("p")?.textContent?.trim() || "";
     const category = card.querySelector(".gift-tag")?.textContent?.trim() || "Geral";
+    const titleKey = slugify(title);
+    const descriptionKey = slugify(description);
+    const categoryKey = slugify(category);
+    const searchableText = [titleKey, descriptionKey, categoryKey].join(" ");
     const image = card.querySelector("img")?.getAttribute("src") || "";
     const price = Number(card.dataset.price || 0);
-    const relevance = Number(card.dataset.relevance || index);
+    const relevance = Number.isFinite(Number(card.dataset.relevance))
+      ? Number(card.dataset.relevance)
+      : index;
     const id = slugify(title);
     const button = card.querySelector(".gift-button");
 
     card.dataset.category = category;
+    card.dataset.categoryKey = categoryKey;
     card.dataset.id = id;
 
     if (button) {
@@ -319,14 +338,46 @@ function initGiftStore() {
       button.classList.add("ready");
     }
 
-    return { id, title, description, category, image, price, relevance, card, button };
+    return {
+      id,
+      title,
+      description,
+      category,
+      categoryKey,
+      titleKey,
+      descriptionKey,
+      searchableText,
+      image,
+      price,
+      relevance,
+      originalIndex: index,
+      card,
+      button
+    };
   });
 
-  const categories = Array.from(new Set(catalog.map((item) => item.category))).sort((a, b) => collator.compare(a, b));
-  categories.forEach((category) => {
+  const catalogMap = new Map(catalog.map((item) => [item.id, item]));
+
+  const categories = Array.from(
+    new Map(catalog.map((item) => [item.categoryKey, item.category])).entries()
+  ).sort((a, b) => collator.compare(a[1], b[1]));
+
+  catalog.forEach((item) => {
+    const imageEl = item.card.querySelector("img");
+    if (imageEl) {
+      imageEl.loading = "lazy";
+      imageEl.decoding = "async";
+    }
+  });
+
+  Array.from(giftCategory.querySelectorAll("option"))
+    .slice(1)
+    .forEach((option) => option.remove());
+
+  categories.forEach(([categoryKey, categoryLabel]) => {
     const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
+    option.value = categoryKey;
+    option.textContent = categoryLabel;
     giftCategory.appendChild(option);
   });
 
@@ -355,7 +406,7 @@ function initGiftStore() {
   function getCartEntries() {
     return Object.entries(cart)
       .map(([id, quantity]) => {
-        const item = catalog.find((gift) => gift.id === id);
+        const item = catalogMap.get(id);
         return item ? { ...item, quantity } : null;
       })
       .filter(Boolean);
@@ -385,7 +436,7 @@ function initGiftStore() {
           <strong>${item.title}</strong>
           <span>${item.category}</span>
           <div class="gift-cart-qty">
-            <button type="button" data-action="decrease" data-id="${item.id}" aria-label="Diminuir quantidade">−</button>
+            <button type="button" data-action="decrease" data-id="${item.id}" aria-label="Diminuir quantidade">-</button>
             <b>${item.quantity}</b>
             <button type="button" data-action="increase" data-id="${item.id}" aria-label="Aumentar quantidade">+</button>
           </div>
@@ -429,32 +480,52 @@ function initGiftStore() {
     return [...items].sort((a, b) => {
       if (mode === "price-desc") return b.price - a.price || collator.compare(a.title, b.title);
       if (mode === "alpha") return collator.compare(a.title, b.title) || a.price - b.price;
-      if (mode === "relevance") return a.relevance - b.relevance;
+      if (mode === "relevance") return a.relevance - b.relevance || a.originalIndex - b.originalIndex || collator.compare(a.title, b.title);
       return a.price - b.price || collator.compare(a.title, b.title);
     });
   }
 
+  function updateResultsSummary(ordered, searchTokens, categoryKey, mode) {
+    if (!giftResultsSummary) return;
+
+    const count = ordered.length;
+    const countLabel = count === 1 ? "1 presente encontrado" : `${count} presentes encontrados`;
+    const categoryLabel = categoryKey === "all"
+      ? "todas as categorias"
+      : (categories.find(([key]) => key === categoryKey)?.[1] || "categoria selecionada");
+    const filters = [];
+
+    if (searchTokens.length) {
+      filters.push(`busca por “${giftSearch.value.trim()}”`);
+    }
+
+    filters.push(categoryLabel);
+    giftResultsSummary.innerHTML = `<strong>${countLabel}</strong><span>Mostrando ${filters.join(" • ")} • ordenado por ${getSortLabel(mode)}.</span>`;
+  }
+
   function renderCatalog() {
-    const searchTerm = slugify(giftSearch.value).replace(/-/g, " ");
-    const category = giftCategory.value;
+    const searchTokens = getSearchTokens(giftSearch.value);
+    const categoryKey = giftCategory.value;
     const mode = giftSort.value;
 
     const filtered = catalog.filter((item) => {
-      const normalizedTitle = slugify(item.title).replace(/-/g, " ");
-      const normalizedDescription = slugify(item.description).replace(/-/g, " ");
-      const matchesSearch = !searchTerm || normalizedTitle.includes(searchTerm) || normalizedDescription.includes(searchTerm);
-      const matchesCategory = category === "all" || item.category === category;
+      const matchesSearch = !searchTokens.length
+        || searchTokens.every((token) => item.searchableText.includes(token));
+      const matchesCategory = categoryKey === "all" || item.categoryKey === categoryKey;
       return matchesSearch && matchesCategory;
     });
 
     const ordered = sortCatalog(filtered, mode);
-    catalog.forEach((item) => { item.card.hidden = true; });
+    catalog.forEach((item) => {
+      item.card.hidden = true;
+    });
     ordered.forEach((item) => {
       item.card.hidden = false;
       giftGrid.appendChild(item.card);
     });
 
     noResults.hidden = ordered.length > 0;
+    updateResultsSummary(ordered, searchTokens, categoryKey, mode);
   }
 
   catalog.forEach((item) => {
@@ -464,8 +535,9 @@ function initGiftStore() {
       renderCart();
       if (window.innerWidth <= 900) {
         giftCartPanel.classList.add("open");
+        giftCartToggle.setAttribute("aria-expanded", "true");
+        giftCartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      giftCartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
@@ -478,6 +550,9 @@ function initGiftStore() {
   giftSort.addEventListener("change", renderCatalog);
   giftCategory.addEventListener("change", renderCatalog);
   giftSearch.addEventListener("input", renderCatalog);
+  [giftBuyerName, giftBuyerEmail, giftBuyerPhone]
+    .filter(Boolean)
+    .forEach((field) => field.addEventListener("input", persistBuyerData));
   giftResetFilters.addEventListener("click", () => {
     giftSearch.value = "";
     giftCategory.value = "all";
@@ -486,8 +561,11 @@ function initGiftStore() {
   });
 
   giftCartToggle.addEventListener("click", () => {
-    giftCartPanel.classList.toggle("open");
-    giftCartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    const isOpen = giftCartPanel.classList.toggle("open");
+    giftCartToggle.setAttribute("aria-expanded", String(isOpen));
+    if (window.innerWidth <= 900 && isOpen) {
+      giftCartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 
   giftClearCart.addEventListener("click", () => {
@@ -497,7 +575,7 @@ function initGiftStore() {
 
   const requestInfinitePayCheckout = async (payload) => {
     if (!checkoutEndpoint) {
-      throw new Error("O checkout real da InfinitePay precisa de um endpoint intermediario. O GitHub Pages nao executa backend, entao precisamos publicar esta loja em Vercel/Netlify ou apontar para uma API publicada.");
+      throw new Error("O checkout real da InfinitePay precisa de um endpoint intermediário. O GitHub Pages não executa backend, então precisamos publicar esta loja em Vercel/Netlify ou apontar para uma API publicada.");
     }
 
     const controller = new AbortController();
@@ -515,7 +593,7 @@ function initGiftStore() {
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        const detail = data?.message || data?.error || "Nao foi possivel gerar o checkout pelo endpoint intermediario.";
+        const detail = data?.message || data?.error || "Não foi possível gerar o checkout pelo endpoint intermediário.";
         throw new Error(detail);
       }
 
@@ -533,7 +611,7 @@ function initGiftStore() {
   giftCheckoutButton.addEventListener("click", async () => {
     const entries = getCartEntries();
     if (!entries.length) {
-      window.alert("Seu carrinho esta vazio. Escolha pelo menos um presente para continuar.");
+      window.alert("Seu carrinho está vazio. Escolha pelo menos um presente para continuar.");
       return;
     }
 
@@ -585,7 +663,7 @@ function initGiftStore() {
       window.location.href = checkoutUrl;
     } catch (error) {
       const message = error instanceof Error ? error.message : "Erro inesperado ao abrir o checkout.";
-      window.alert(`Nao conseguimos abrir o pagamento agora.
+      window.alert(`Não conseguimos abrir o pagamento agora.
 
 ${message}`);
       giftCheckoutButton.disabled = false;
