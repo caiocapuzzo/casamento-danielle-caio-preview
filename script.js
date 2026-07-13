@@ -280,12 +280,13 @@ function initGiftStore() {
   const giftBuyerEmail = document.querySelector("#giftBuyerEmail");
   const giftBuyerPhone = document.querySelector("#giftBuyerPhone");
 
-  if (!giftSort || !giftCategory || !giftSearch || !giftCartList || !giftCartSubtotal || !giftCartBadge || !giftCartToggle || !giftClearCart || !giftCheckoutButton || !giftCartPanel) return;
+  if (!giftSort || !giftCategory || !giftSearch || !giftResetFilters || !giftCartList || !giftCartSubtotal || !giftCartBadge || !giftCartToggle || !giftClearCart || !giftCheckoutButton || !giftCartPanel) return;
 
   const storageKey = "dc-gift-cart-v1";
   const checkoutDraftKey = "dc-gift-checkout-draft";
   const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
   const infinitepayHandle = document.body.dataset.infinitepayHandle?.trim() || "";
+  const priceMultiplier = Number(document.body.dataset.priceMultiplier || "1") || 1;
   const defaultCheckoutEndpoint = window.location.hostname && !window.location.hostname.endsWith("github.io")
     ? "/api/create-checkout"
     : "";
@@ -318,16 +319,22 @@ function initGiftStore() {
     const categoryKey = slugify(category);
     const searchableText = [titleKey, descriptionKey, categoryKey].join(" ");
     const image = card.querySelector("img")?.getAttribute("src") || "";
-    const price = Number(card.dataset.price || 0);
+    const basePrice = Number(card.dataset.price || 0);
+    const price = Math.round(basePrice * priceMultiplier);
     const relevance = Number.isFinite(Number(card.dataset.relevance))
       ? Number(card.dataset.relevance)
       : index;
     const id = slugify(title);
     const button = card.querySelector(".gift-button");
+    const priceStrong = card.querySelector(".gift-footer strong");
 
     card.dataset.category = category;
     card.dataset.categoryKey = categoryKey;
     card.dataset.id = id;
+
+    if (priceStrong) {
+      priceStrong.textContent = formatCurrency(price);
+    }
 
     if (button) {
       button.textContent = "Adicionar ao carrinho";
@@ -344,10 +351,9 @@ function initGiftStore() {
       description,
       category,
       categoryKey,
-      titleKey,
-      descriptionKey,
       searchableText,
       image,
+      basePrice,
       price,
       relevance,
       originalIndex: index,
@@ -496,7 +502,7 @@ function initGiftStore() {
     const filters = [];
 
     if (searchTokens.length) {
-      filters.push(`busca por “${giftSearch.value.trim()}”`);
+      filters.push(`busca por "${giftSearch.value.trim()}"`);
     }
 
     filters.push(categoryLabel);
@@ -516,13 +522,9 @@ function initGiftStore() {
     });
 
     const ordered = sortCatalog(filtered, mode);
-    catalog.forEach((item) => {
-      item.card.hidden = true;
-    });
-    ordered.forEach((item) => {
-      item.card.hidden = false;
-      giftGrid.appendChild(item.card);
-    });
+    const fragment = document.createDocumentFragment();
+    ordered.forEach((item) => fragment.appendChild(item.card));
+    giftGrid.replaceChildren(fragment);
 
     noResults.hidden = ordered.length > 0;
     updateResultsSummary(ordered, searchTokens, categoryKey, mode);
@@ -553,6 +555,7 @@ function initGiftStore() {
   [giftBuyerName, giftBuyerEmail, giftBuyerPhone]
     .filter(Boolean)
     .forEach((field) => field.addEventListener("input", persistBuyerData));
+
   giftResetFilters.addEventListener("click", () => {
     giftSearch.value = "";
     giftCategory.value = "all";

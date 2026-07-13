@@ -9,8 +9,41 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260626-checkout">
-  <script src="script.js?v=20260626-checkout" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260702-store-filters">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-686108061"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-686108061');
+  </script>
+  <script>
+    (function () {
+      let order = null;
+
+      try {
+        order = JSON.parse(localStorage.getItem("dc-last-infinitepay-order") || "null");
+      } catch {}
+
+      const orderId = order?.orderId || "fallback";
+      const eventKey = "dc-google-ads-conversion-" + orderId;
+
+      if (sessionStorage.getItem(eventKey)) {
+        return;
+      }
+
+      const value = Number(order?.subtotal);
+      gtag('event', 'conversion', {
+        send_to: 'AW-686108061/BaMhCLbjr74cEJ3blMcC',
+        value: Number.isFinite(value) && value > 0 ? value : 1.0,
+        currency: 'BRL'
+      });
+
+      sessionStorage.setItem(eventKey, "1");
+    })();
+  </script>
+  <script src="script.js?v=20260702-store-filters" defer></script>
 </head>
 <body class="subpage">
   <header class="topbar" id="topbar">
