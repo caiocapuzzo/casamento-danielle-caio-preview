@@ -18,31 +18,6 @@
     gtag('js', new Date());
     gtag('config', 'AW-686108061');
   </script>
-  <script>
-    (function () {
-      let order = null;
-
-      try {
-        order = JSON.parse(localStorage.getItem("dc-last-infinitepay-order") || "null");
-      } catch {}
-
-      const orderId = order?.orderId || "fallback";
-      const eventKey = "dc-google-ads-conversion-" + orderId;
-
-      if (sessionStorage.getItem(eventKey)) {
-        return;
-      }
-
-      const value = Number(order?.subtotal);
-      gtag('event', 'conversion', {
-        send_to: 'AW-686108061/BaMhCLbjr74cEJ3blMcC',
-        value: Number.isFinite(value) && value > 0 ? value : 1.0,
-        currency: 'BRL'
-      });
-
-      sessionStorage.setItem(eventKey, "1");
-    })();
-  </script>
   <script src="script.js?v=20260702-store-filters" defer></script>
 </head>
 <body class="subpage">
