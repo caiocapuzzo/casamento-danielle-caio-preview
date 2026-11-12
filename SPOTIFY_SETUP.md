@@ -21,11 +21,11 @@ A aplicação **não funciona** até preencher as variáveis de ambiente do proj
 | SPOTIFY_CLIENT_ID | 1aaa4eef7ece4e00bc2fa91376d67f88 (identificador público; já é o padrão no código) |
 | SPOTIFY_CLIENT_SECRET | Client Secret exibido exclusivamente em Spotify for Developers |
 | SPOTIFY_SETUP_KEY | Senha aleatória forte, criada por vocês, com pelo menos 16 caracteres |
-| UPSTASH_REDIS_REST_URL | URL REST do Redis da integração Upstash vinculada ao projeto Vercel |
-| UPSTASH_REDIS_REST_TOKEN | Token REST secreto da mesma integração |
+| KV_REST_API_URL | Criada automaticamente pela integração Upstash Redis da Vercel (alternativa: UPSTASH_REDIS_REST_URL) |
+| KV_REST_API_TOKEN | Criada automaticamente pela integração Upstash Redis da Vercel (alternativa: UPSTASH_REDIS_REST_TOKEN) |
 | SPOTIFY_REDIRECT_URI | Por padrão, https://daniecaio.vercel.app/api/spotify/callback. Configure outro valor somente para testar em preview, e cadastre a mesma URL no Spotify. |
 
-No dashboard Vercel, conecte um banco Upstash Redis ao projeto (Marketplace/Storage). Garanta que as variáveis UPSTASH_REDIS_REST_URL e UPSTASH_REDIS_REST_TOKEN estejam disponibilizadas no ambiente de teste e, depois, no de produção. Se a integração Vercel criar aliases diferentes, crie os nomes acima apontando aos valores corretos.
+No dashboard Vercel, conecte um banco Upstash Redis ao projeto (Marketplace/Storage). O projeto já recebe `KV_REST_API_URL` e `KV_REST_API_TOKEN` da integração, em Preview e Production. O backend aceita esses nomes ou os nomes equivalentes `UPSTASH_REDIS_REST_*`, sem copiar nem divulgar os valores secretos. Após qualquer mudança nas variáveis, faça redeploy do Preview para injetá-las no runtime.
 
 ### Autorização inicial
 
