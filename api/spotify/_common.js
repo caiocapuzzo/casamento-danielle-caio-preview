@@ -40,18 +40,20 @@ async function body(req) {
 function requiredEnv() {
   if (!process.env.SPOTIFY_CLIENT_SECRET ||
       !process.env.SPOTIFY_SETUP_KEY ||
-      !process.env.UPSTASH_REDIS_REST_URL ||
-      !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      !(process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL) ||
+      !(process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN)) {
     throw Object.assign(new Error("Variáveis de ambiente ausentes."), { status: 503 });
   }
 }
 
 async function redis() {
   requiredEnv();
-  const response = await fetch(process.env.UPSTASH_REDIS_REST_URL.replace(/\/$/, ""), {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  const response = await fetch(url.replace(/\/$/, ""), {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + process.env.UPSTASH_REDIS_REST_TOKEN,
+      Authorization: "Bearer " + token,
       "Content-Type": "application/json"
     },
     body: JSON.stringify(Array.from(arguments)),
