@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Padrinhos: escolham uma música para a trilha sonora do casamento de Danielle e Caio.">
+  <meta name="theme-color" content="#7d8658">
+  <title>Nossa trilha sonora | Danielle & Caio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="musicas.css">
+  <script src="musicas.js" defer></script>
+</head>
+<body>
+  <header class="music-header">
+    <a href="index.html" class="brand" aria-label="Voltar ao site do casamento">
+      <img src="assets/logo-olive-transparent.png" alt="Danielle e Caio">
+    </a>
+    <a href="index.html" class="header-link">Voltar ao casamento</a>
+  </header>
+  <main>
+    <section class="music-hero">
+      <span class="eyebrow">Para pessoas que fazem parte da nossa história</span>
+      <h1>Nossa <em>trilha sonora</em></h1>
+      <span class="hairline" aria-hidden="true"></span>
+      <p>Você faz parte da nossa história. Agora queremos que faça parte da nossa trilha sonora! Escolha aquela música que merece estar com a gente nesse dia tão especial.</p>
+      <p class="date">Danielle <i>&</i> Caio · 21.08.2027</p>
+    </section>
+    <section class="music-content" aria-labelledby="choose-title">
+      <div class="music-card">
+        <p class="eyebrow">Um pedacinho de você no nosso grande dia</p>
+        <h2 id="choose-title">Qual música não pode faltar?</h2>
+        <form id="musicForm" novalidate>
+          <label for="guestName">Seu nome</label>
+          <input id="guestName" name="guestName" type="text" minlength="2" maxlength="70" autocomplete="name" placeholder="Como podemos chamar você?" required>
+          <label for="songQuery">Encontre sua música</label>
+          <p class="field-help">Comece a digitar o nome da música ou do artista e escolha a versão certa.</p>
+          <input id="songQuery" name="songQuery" type="search" autocomplete="off" spellcheck="false" placeholder="Ex.: Evidências, Coldplay..." aria-controls="searchResults">
+          <div id="searchResults" class="search-results" role="region" aria-label="Músicas encontradas"></div>
+          <div id="selectedTrack" class="selected-track" hidden></div>
+          <button type="submit" id="submitSong" class="submit-button" disabled>Adicionar à nossa playlist <span aria-hidden="true">♫</span></button>
+          <p id="status" class="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="music-extras">
+        <div class="quote-card">
+          <p class="eyebrow">A música guarda lembranças</p>
+          <blockquote>“Algumas histórias são contadas em palavras. Outras, em canções.”</blockquote>
+          <p>O que importa é a lembrança que ela carrega.</p>
+        </div>
+        <div class="playlist-card">
+          <p class="eyebrow">Nossa playlist no Spotify</p>
+          <h3>As músicas da nossa história</h3>
+          <p>Quer ouvir o que já faz parte da nossa trilha?</p>
+          <a href="https://open.spotify.com/playlist/2u5ZOx6YYH05UDJ9UE3oae" target="_blank" rel="noopener noreferrer">Ouvir a playlist <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+    <section class="recent-section" aria-labelledby="recent-title">
+      <p class="eyebrow">Escolhas que contam histórias</p>
+      <h2 id="recent-title">As músicas que vocês escolheram</h2>
+      <div id="recentSuggestions" class="recent-list" aria-live="polite">
+        <p class="placeholder">As primeiras escolhas vão aparecer por aqui.</p>
+      </div>
+      <p class="privacy-note">Ao enviar, você concorda em mostrar seu nome junto da música escolhida nesta página. Não precisamos de cadastro ou login.</p>
+    </section>
+  </main>
+  <footer>
+    <p>Com carinho, <em>Dani & Caio</em></p>
+    <small>21 de agosto de 2027</small>
+  </footer>
+</body>
+</html>
