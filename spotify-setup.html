@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Configurar Spotify | Danielle & Caio</title>
+  <link rel="stylesheet" href="musicas.css">
+</head>
+<body>
+  <header class="music-header">
+    <a href="index.html" class="brand"><img src="assets/logo-olive-transparent.png" alt="Danielle e Caio"></a>
+    <a href="musicas.html" class="header-link">Ver página de músicas</a>
+  </header>
+  <main class="music-content" style="display:block;max-width:620px;margin-top:70px">
+    <section class="music-card">
+      <p class="eyebrow">Configuração exclusiva dos noivos</p>
+      <h1 style="font:500 52px/1 var(--serif);margin:20px 0">Conectar Spotify</h1>
+      <p>Depois de configurar os segredos na Vercel, entre com a chave administrativa criada por você. Vamos abrir a autorização oficial do Spotify, sem guardar sua senha.</p>
+      <p><strong>Importante:</strong> conecte a mesma conta Premium que é proprietária da playlist do casamento.</p>
+      <form id="setupForm">
+        <label for="setupKey">Chave administrativa (SPOTIFY_SETUP_KEY)</label>
+        <input id="setupKey" type="password" autocomplete="off" required minlength="16" placeholder="Sua chave criada na Vercel">
+        <button id="connect" type="submit" class="submit-button">Autorizar conta Spotify</button>
+        <p id="setupStatus" class="status" role="status" aria-live="polite"></p>
+      </form>
+      <p style="font-size:12px">Não compartilhe esta chave, o Client Secret nem tokens em mensagens. Eles devem existir somente nas variáveis protegidas da Vercel.</p>
+    </section>
+  </main>
+  <script>
+    document.getElementById("setupForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const button = document.getElementById("connect");
+      const status = document.getElementById("setupStatus");
+      const input = document.getElementById("setupKey");
+      button.disabled = true;
+      status.textContent = "Preparando autorização…";
+      try {
+        const response = await fetch("/api/spotify/setup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ setupKey: input.value })
+        });
+        input.value = "";
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Falha ao preparar autorização.");
+        window.location.assign(data.authorizeUrl);
+      } catch (error) {
+        status.textContent = error.message;
+        status.className = "status error";
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
