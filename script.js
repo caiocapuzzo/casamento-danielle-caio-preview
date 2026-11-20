@@ -116,19 +116,51 @@ function initReveal() {
 function initRsvp() {
   const rsvpForm = document.querySelector("#rsvpForm");
   const formNote = document.querySelector("#formNote");
-
   if (!rsvpForm || !formNote) return;
 
-  rsvpForm.addEventListener("submit", (event) => {
+  const button = rsvpForm.querySelector('[type="submit"]');
+  let pending = null;
+  let sending = false;
+  rsvpForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const response = Object.fromEntries(new FormData(rsvpForm).entries());
-    const savedResponses = JSON.parse(localStorage.getItem("dc-rsvp-demo") || "[]");
-    savedResponses.push({ ...response, sentAt: new Date().toISOString() });
-    localStorage.setItem("dc-rsvp-demo", JSON.stringify(savedResponses));
-    formNote.textContent = response.attendance === "sim"
-      ? "Presença confirmada. Que alegria ter você com a gente!"
-      : "Resposta registrada. Sentiremos sua falta!";
-    rsvpForm.reset();
+    if (sending) return;
+    const values = Object.fromEntries(new FormData(rsvpForm).entries());
+    const signature = JSON.stringify(values);
+    try {
+      if (!pending || pending.signature !== signature) {
+        pending = { signature, id: window.crypto.randomUUID() };
+      }
+      sending = true;
+      if (button) button.disabled = true;
+      formNote.textContent = "Enviando sua confirmação…";
+      const response = await fetch("/api/rsvp", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, submissionId: pending.id }),
+        signal: AbortSignal.timeout(12000),
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true) {
+        formNote.textContent = response.status === 429
+          ? "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente."
+          : "Não foi possível confirmar o envio. Confira os dados ou tente novamente.";
+        return;
+      }
+      formNote.textContent = values.attendance === "sim"
+        ? "Presença confirmada. Que alegria ter você com a gente!"
+        : "Resposta registrada. Sentiremos sua falta!";
+      // Do not wipe a guest's edits made while the previous response was sending.
+      if (JSON.stringify(Object.fromEntries(new FormData(rsvpForm).entries())) === signature) {
+        rsvpForm.reset();
+      }
+      pending = null;
+    } catch {
+      formNote.textContent = "Não foi possível confirmar o envio. Tente novamente.";
+    } finally {
+      sending = false;
+      if (button) button.disabled = false;
+    }
   });
 }
 
