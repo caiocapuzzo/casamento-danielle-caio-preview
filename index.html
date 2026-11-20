@@ -18,7 +18,7 @@
     gtag('js', new Date());
     gtag('config', 'AW-686108061');
   </script>
-  <script src="script.js?v=20260702-store-filters" defer></script>
+  <script src="script.js?v=20261120-rsvp" defer></script>
 </head>
 <body>
   <header class="topbar" id="topbar">
@@ -318,10 +318,10 @@
         <h2>Você vem<br><em>celebrar conosco?</em></h2>
         <p>Sua presença é o nosso melhor presente. Em breve informaremos a data-limite para confirmação.</p>
       </div>
-      <form class="rsvp-form reveal" id="rsvpForm">
+      <form class="rsvp-form reveal" id="rsvpForm" method="post" action="/api/rsvp">
         <div class="field full">
           <label for="guestName">Nome completo</label>
-          <input id="guestName" name="guestName" type="text" placeholder="Digite como está no convite" required autocomplete="name">
+          <input id="guestName" name="guestName" type="text" placeholder="Digite como está no convite" required autocomplete="name" maxlength="120">
         </div>
         <fieldset class="field full">
           <legend>Você poderá comparecer?</legend>
@@ -339,11 +339,11 @@
         </div>
         <div class="field">
           <label for="diet">Restrição alimentar</label>
-          <input id="diet" name="diet" type="text" placeholder="Se houver">
+          <input id="diet" name="diet" type="text" maxlength="200" placeholder="Se houver">
         </div>
         <div class="field full">
           <label for="message">Deixe um recado para nós</label>
-          <textarea id="message" name="message" rows="3" placeholder="Vamos adorar ler"></textarea>
+          <textarea id="message" name="message" rows="3" maxlength="1000" placeholder="Vamos adorar ler"></textarea>
         </div>
         <button class="button cream" type="submit">Confirmar presença <span>→</span></button>
         <p class="form-note" id="formNote" aria-live="polite"></p>
