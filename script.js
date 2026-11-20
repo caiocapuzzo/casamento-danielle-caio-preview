@@ -119,6 +119,39 @@ function initRsvp() {
   if (!rsvpForm || !formNote) return;
 
   const button = rsvpForm.querySelector('[type="submit"]');
+  const companion = document.querySelector("#rsvpCompanion");
+  const companionToggle = document.querySelector("#rsvpCompanionToggle");
+  const companionFields = document.querySelector("#rsvpCompanionFields");
+  const companionName = document.querySelector("#companionName");
+  let addingCompanion = false;
+
+  function syncCompanion() {
+    if (!companion || !companionToggle || !companionFields || !companionName) return;
+    const attending = Boolean(rsvpForm.querySelector('input[name="attendance"][value="sim"]:checked'));
+    if (!attending) addingCompanion = false;
+    companion.hidden = !attending;
+    companionFields.hidden = !addingCompanion;
+    companionName.disabled = !addingCompanion;
+    companionName.required = addingCompanion;
+    if (!addingCompanion) {
+      companionName.value = "";
+      companionName.setCustomValidity("");
+    }
+    companionToggle.setAttribute("aria-expanded", String(addingCompanion));
+    companionToggle.textContent = addingCompanion ? "Remover acompanhante" : "+ Adicionar acompanhante";
+  }
+
+  companionToggle?.addEventListener("click", () => {
+    addingCompanion = !addingCompanion;
+    syncCompanion();
+    if (addingCompanion) companionName.focus();
+  });
+  companionName?.addEventListener("input", () => companionName.setCustomValidity(""));
+  rsvpForm.addEventListener("change", (event) => {
+    if (event.target.name === "attendance") syncCompanion();
+  });
+  syncCompanion();
+
   let pending = null;
   let sending = false;
   rsvpForm.addEventListener("submit", async (event) => {
@@ -126,6 +159,14 @@ function initRsvp() {
     if (sending) return;
     const values = Object.fromEntries(new FormData(rsvpForm).entries());
     const signature = JSON.stringify(values);
+    if (values.companionName !== undefined) {
+      if (values.attendance !== "sim" || values.companionName.trim().length < 2) {
+        companionName.setCustomValidity("Informe o nome completo do acompanhante.");
+        companionName.reportValidity();
+        return;
+      }
+      values.companions = "1";
+    }
     try {
       if (!pending || pending.signature !== signature) {
         pending = { signature, id: window.crypto.randomUUID() };
@@ -153,6 +194,8 @@ function initRsvp() {
       // Do not wipe a guest's edits made while the previous response was sending.
       if (JSON.stringify(Object.fromEntries(new FormData(rsvpForm).entries())) === signature) {
         rsvpForm.reset();
+        addingCompanion = false;
+        syncCompanion();
       }
       pending = null;
     } catch {

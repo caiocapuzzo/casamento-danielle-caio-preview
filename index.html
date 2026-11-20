@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260619d">
+  <link rel="stylesheet" href="styles.css?v=20261120-rsvp-companion">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-686108061"></script>
   <script>
@@ -18,7 +18,7 @@
     gtag('js', new Date());
     gtag('config', 'AW-686108061');
   </script>
-  <script src="script.js?v=20261120-rsvp" defer></script>
+  <script src="script.js?v=20261120-rsvp-companion" defer></script>
 </head>
 <body>
   <header class="topbar" id="topbar">
@@ -328,14 +328,15 @@
           <label class="radio"><input type="radio" name="attendance" value="sim" required><span>Sim, estarei lá!</span></label>
           <label class="radio"><input type="radio" name="attendance" value="nao"><span>Infelizmente não poderei ir</span></label>
         </fieldset>
-        <div class="field">
-          <label for="companions">Acompanhantes</label>
-          <select id="companions" name="companions">
-            <option value="0">Nenhum</option>
-            <option value="1">1 acompanhante</option>
-            <option value="2">2 acompanhantes</option>
-            <option value="3">3 acompanhantes</option>
-          </select>
+        <div class="field full rsvp-companion" id="rsvpCompanion" hidden>
+          <div class="rsvp-companion-action">
+            <button class="button cream" type="button" id="rsvpCompanionToggle" aria-controls="rsvpCompanionFields" aria-expanded="false" aria-describedby="rsvpCompanionHint">+ Adicionar acompanhante</button>
+            <small id="rsvpCompanionHint">Se o seu convite inclui acompanhante.</small>
+          </div>
+          <div class="field rsvp-companion-fields" id="rsvpCompanionFields" hidden>
+            <label for="companionName">Nome completo do acompanhante</label>
+            <input id="companionName" name="companionName" type="text" placeholder="Digite o nome do acompanhante" autocomplete="section-acompanhante name" minlength="2" maxlength="120" disabled>
+          </div>
         </div>
         <div class="field">
           <label for="diet">Restrição alimentar</label>
