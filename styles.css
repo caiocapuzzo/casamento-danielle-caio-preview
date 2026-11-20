@@ -872,6 +872,10 @@ blockquote cite { display: block; margin-top: 28px; font: 500 8px var(--sans); l
 .rsvp-form { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 22px; padding: clamp(30px, 5vw, 65px); border: 1px solid rgba(255,255,255,.25); }
 .field { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
 .field.full { grid-column: 1 / -1; }
+.rsvp-companion[hidden], .rsvp-companion-fields[hidden] { display: none; }
+.rsvp-companion-action { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.rsvp-companion-action small { color: #eff0e8; font-size: 11px; line-height: 1.5; }
+.rsvp-companion-fields { margin-top: 7px; }
 .field label, .field legend { padding: 0; color: #eff0e8; font-size: 8px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
 fieldset.field { border: 0; padding: 0; margin: 0; }
 input, select, textarea { width: 100%; border: 0; border-bottom: 1px solid rgba(255,255,255,.38); border-radius: 0; outline: 0; padding: 12px 0; color: white; background: transparent; font: 300 13px var(--sans); }

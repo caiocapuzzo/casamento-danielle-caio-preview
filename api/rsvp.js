@@ -48,7 +48,7 @@ function parse(body) {
   }
   if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("invalid");
   if (Buffer.byteLength(JSON.stringify(body), "utf8") > MAX_BODY) throw new RangeError();
-  const allowed = new Set(["submissionId", "guestName", "attendance", "companions", "diet", "message"]);
+  const allowed = new Set(["submissionId", "guestName", "attendance", "companions", "diet", "message", "companionName"]);
   if (Object.keys(body).some((key) => !allowed.has(key))) throw new Error("invalid");
   const { submissionId, attendance } = body;
   if (typeof submissionId !== "string" || !ID.test(submissionId)) throw new Error("invalid");
@@ -59,8 +59,15 @@ function parse(body) {
   if (typeof num !== "string" || !/^[0-3]$/.test(num)) throw new Error("invalid");
   const diet = normalized(body.diet ?? "", 200, true);
   const message = normalized(body.message ?? "", 1000);
-  return { submissionId: submissionId.toLowerCase(), guestName, attendance,
+  const entry = { submissionId: submissionId.toLowerCase(), guestName, attendance,
     companions: attendance === "sim" ? Number(num) : 0, diet: attendance === "sim" ? diet : "", message };
+  // Old browsers may still send the former selector. Preserve its payload/fingerprint.
+  if (Object.hasOwn(body, "companionName")) {
+    const name = normalized(body.companionName, 120, true);
+    if (attendance !== "sim" || num !== "1" || name.length < 2) throw new Error("invalid");
+    entry.companionName = name;
+  }
+  return entry;
 }
 
 module.exports = async (req, res) => {
@@ -100,7 +107,8 @@ module.exports = async (req, res) => {
     const rateHash = createHmac("sha256", token).update("dc-rsvp-rate:" + network).digest("hex");
     const { submissionId, ...values } = entry;
     const fingerprint = createHash("sha256").update(JSON.stringify(values)).digest("hex");
-    const record = { ...values, receivedAt: new Date().toISOString(), fingerprint };
+    const headcount = values.attendance === "sim" ? 1 + values.companions : 0;
+    const record = { ...values, headcount, receivedAt: new Date().toISOString(), fingerprint };
     const result = await fetch(url.toString(), {
       method: "POST",
       headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
