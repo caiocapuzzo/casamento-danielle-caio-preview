@@ -1206,6 +1206,7 @@ html.wedding-guest-page { color-scheme: only light; }
 .wedding-home .scroll-hint span { margin: 0; font-size: 14px; }
 .wedding-home :where(#celebracao, #hospedagem, #rsvp, #contagem) { scroll-margin-top: 74px; }
 @media (max-width: 900px) {
+  .hero-guest-actions .hero-confirm { justify-self: center; max-width: 100%; text-align: center; }
   .wedding-home .mini-mark { --mark-size: 70px; width: 66px; height: 54px; }
   .wedding-home .menu-button { min-width: 44px; min-height: 44px; }
   .wedding-home .hero { padding-top: 92px; }
