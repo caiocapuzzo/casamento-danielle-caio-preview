@@ -1,0 +1,19 @@
+# Private wedding RSVP dashboard (V1)
+
+This is a read-only responses dashboard. It has no link in public navigation and does not change existing guest forms, RSVP submissions, or checkout. The HTML sign-in shell has no guest data. No real guest rows are used in tests.
+
+## Activation, only after review
+
+Vercel production requires RSVP_ADMIN_ENABLED=true, RSVP_ADMIN_ORIGIN set to the exact canonical HTTPS origin with no slash/path, and the already-existing server-side Redis REST URL/token. Preview and development will always return 404 before a Redis request, regardless of any environment values. For the current alias use https://daniecaio.vercel.app as the origin if approved. Do not change permissions or project-wide deployment protection for this feature.
+
+Initial access as caio requires RSVP_ADMIN_BOOTSTRAP_HASH in the format scrypt-v1$hex-salt$hex-derived-key and RSVP_ADMIN_BOOTSTRAP_EXPIRES as an ISO UTC timestamp YYYY-MM-DDTHH:mm:ssZ no more than 24 hours in the future. Make the temporary password random (32 bytes encoded base64url is suitable), never the weak user suggestion, and do not put plaintext in Git, deployment configuration, command history or logs. Derive the hash with a fresh random 16-byte salt, a 32-byte key from scrypt N=32768, r=8, p=1, maxmem at least 64MiB. Existing authorised infrastructure should set only the hash and deadline for production. Advise the owner of the temporary passcode only via an approved safe channel. Once the owner confirms first password change and permanent login, remove the obsolete bootstrap parameters only; permanent login does not use them. The canonical origin and enabled flag remain. If setup needs recovery before the first permanent password, set a new random, expiring bootstrap and wait for the short-lived pending lock; no security-sensitive reset action is exposed.
+
+## Access and data
+
+Both an opaque HttpOnly/Secure/SameSite=Strict cookie and a separate random per-tab request capability kept exclusively in page memory are required. Refreshing or reopening the panel requires sign-in again. The capability mitigates ordinary ambient-cookie fetches from other same-origin pages (e.g. public analytics), but is not isolation from arbitrary hostile code able to inject directly into the panel document; an admin-only origin is stronger if separately approved. The admin page has no third-party scripts or analytics and a strictly scoped CSP. Browser history does not contain credential or guest query parameters. Do not publish access URL from the public pages.
+
+The bootstrap credentials are converted atomically to one permanent salted scrypt credential before access to records. Session IDs are rotated on first password change, expire after eight hours and revoke individually on logout. A pending bootstrap claim can retry after expiry/logout if it has not yet set a permanent password. Auth attempts are server-side rate-limited by a hashed client network bucket and by a global cap. Existing RSVP hash is read-only via bounded HSCAN after authentication, not in preview. Dashboard does not infer a roster or identify duplicates as definitely mistaken. Dietary notes and recados are omitted from the response and CSV. CSV protects likely spreadsheet formulas; save only to private devices.
+
+## Tests
+
+Run node --test admin-tests/painel.test.js from the repository root. Current tests cover unknown origin, deliberately disabled/preview origin, invalid/expired bootstrap, signed-out and pending no reads, single bootstrap claim, weak/old password rejection, competing first-login changes, rotated cookie, required independent tab key, authorized bounded retrieval, duplicate counts, omitted fields, formula-safe Excel-compatible CSV, revoked session and persistent rate limit. Network is mocked against synthetic records; preview smoke must not enable real storage.
