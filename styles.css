@@ -1159,3 +1159,75 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   .lodging-card { grid-template-columns: minmax(0, 1fr); }
   .lodging-booking { border-left: 0; border-top: 1px solid rgba(125, 134, 88, .22); }
 }
+
+/* Capa e navegação da página principal */
+html.wedding-guest-page { color-scheme: only light; }
+.wedding-home .topbar:not(.scrolled) { background: linear-gradient(180deg, rgba(25,36,23,.84), rgba(25,36,23,.39) 66%, transparent); }
+.wedding-home .topbar.scrolled { background: #f4f1ea; }
+.wedding-home .mini-mark { --mark-color: #f4f1ea; --mark-size: 76px; flex: 0 0 auto; z-index: 2; width: 72px; height: 60px; }
+.wedding-home .mini-mark img, .wedding-home .mini-mark::before {
+  position: absolute; inset: 50% auto auto 50%; width: var(--mark-size); height: var(--mark-size);
+  object-position: center; transform: translate(-50%, -50%); pointer-events: none;
+}
+.wedding-home .topbar.scrolled .mini-mark { --mark-color: #56603c; }
+.wedding-home .topbar.scrolled .hero-monogram-image { filter: brightness(.4); }
+.wedding-home .topbar:has(nav.open) .mini-mark { --mark-color: #f4f1ea; }
+.wedding-home .topbar:has(nav.open) .hero-monogram-image { filter: none; }
+@supports (mask-image: url("assets/logo-light-transparent.png")) or (-webkit-mask-image: url("assets/logo-light-transparent.png")) {
+  .wedding-home .mini-mark img { opacity: 0; }
+  .wedding-home .mini-mark::before {
+    content: ""; background: var(--mark-color);
+    -webkit-mask: url("assets/logo-light-transparent.png") center / contain no-repeat;
+    mask: url("assets/logo-light-transparent.png") center / contain no-repeat;
+  }
+}
+.wedding-home .topbar a:focus-visible, .wedding-home .menu-button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.wedding-home .hero { padding: 102px 15px 25px; }
+.wedding-home .hero-content { width: min(1050px, 100%); padding-top: 0; }
+.wedding-home .hero-shade {
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(20,30,18,.57), rgba(20,30,18,.11) 70%),
+    linear-gradient(0deg, rgba(18,30,17,.56), rgba(18,30,17,.12) 65%);
+}
+.wedding-home .hero h1 { text-shadow: 0 3px 24px rgba(20,30,18,.68); }
+.wedding-home .hero-date { margin-top: clamp(23px, 4vh, 42px); }
+.wedding-home .hero-time { margin-top: 12px; }
+.hero-guest-actions { display: grid; gap: 4px; justify-items: center; margin-top: clamp(17px, 4vh, 34px); }
+.hero-guest-actions .hero-confirm { min-height: 50px; padding-inline: clamp(18px, 6vw, 36px); box-shadow: 0 5px 23px rgba(13,26,14,.32); font-size: 11px; }
+.hero-guest-actions .hero-confirm:hover { background: white; }
+.hero-guest-secondary { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; column-gap: 15px; }
+.hero-guest-secondary a {
+  display: inline-grid; place-items: center; min-height: 44px; padding-inline: 7px;
+  color: #fff; font-size: 11px; font-weight: 600; text-underline-offset: 4px;
+  text-shadow: 0 1px 5px #283523;
+}
+.wedding-home .hero a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.wedding-home .scroll-hint { position: static; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 7px; transform: none; }
+.wedding-home .scroll-hint span { margin: 0; font-size: 14px; }
+.wedding-home :where(#celebracao, #hospedagem, #rsvp, #contagem) { scroll-margin-top: 74px; }
+@media (max-width: 900px) {
+  .wedding-home .mini-mark { --mark-size: 70px; width: 66px; height: 54px; }
+  .wedding-home .menu-button { min-width: 44px; min-height: 44px; }
+  .wedding-home .hero { padding-top: 92px; }
+}
+@media (max-width: 580px) {
+  .wedding-home .hero h1 { font-size: clamp(53px, 13vw, 71px); }
+  .wedding-home .hero-date { gap: 9px; }
+  .wedding-home .hero-date b { width: 31px; }
+  .wedding-home .hero-time { font-size: 21px; }
+}
+@media (max-height: 650px) {
+  .wedding-home .hero { padding-top: 76px; padding-bottom: 10px; }
+  .wedding-home .hero-content .eyebrow { margin-bottom: 10px; }
+  .wedding-home .hero h1 { font-size: clamp(43px, 10.5vw, 86px); }
+  .wedding-home .hero-date { margin-top: 17px; }
+  .wedding-home .hero-time { margin-top: 8px; }
+  .wedding-home .hero-guest-actions { margin-top: 14px; }
+  .wedding-home .scroll-hint { margin-top: 0; }
+}
+@media (forced-colors: active) {
+  .wedding-home .hero { color: CanvasText; }
+  .wedding-home .mini-mark::before { forced-color-adjust: none; background: CanvasText; }
+  .wedding-home .hero a:focus-visible { outline-color: Highlight; }
+  .hero-guest-actions .hero-confirm { border: 1px solid LinkText; }
+}
