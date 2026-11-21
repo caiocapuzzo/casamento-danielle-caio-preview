@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="color-scheme" content="only light">
+  <meta name="referrer" content="no-referrer">
+  <title>Painel de presenças | Danielle &amp; Caio</title>
+  <link rel="stylesheet" href="/admin-assets/presencas.css">
+  <script src="/admin-assets/presencas.js" defer></script>
+</head>
+<body>
+<main>
+  <header class="cover">
+    <span class="mark" aria-hidden="true">D <i>&amp;</i> C</span>
+    <p class="kicker">Danielle &amp; Caio · Área privada</p>
+    <h1>Painel de <em>presenças</em></h1>
+    <button class="quiet" id="logout" type="button" hidden>Sair</button>
+  </header>
+  <p id="notice" class="notice" role="status" aria-live="polite">Verificando acesso…</p>
+  <section id="login" class="gate" aria-labelledby="loginTitle" hidden>
+    <h2 id="loginTitle">Entrar no painel</h2>
+    <p>Área reservada à organização do casamento.</p>
+    <form id="loginForm" method="post" action="/api/painel-presencas">
+      <label for="username">Usuário</label>
+      <input id="username" name="username" type="text" autocomplete="username" required maxlength="64" autocapitalize="off" spellcheck="false">
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="128">
+      <button class="primary" type="submit">Entrar</button>
+    </form>
+  </section>
+  <section id="change" class="gate" aria-labelledby="changeTitle" hidden>
+    <h2 id="changeTitle">Crie sua nova senha</h2>
+    <p>Antes de ver as respostas, troque a senha temporária. Use 16 caracteres ou mais, com letras e pelo menos um número ou símbolo.</p>
+    <form id="changeForm" method="post" action="/api/painel-presencas">
+      <label for="newPassword">Nova senha</label>
+      <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" required minlength="16" maxlength="128">
+      <label for="confirmPassword">Repita a nova senha</label>
+      <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required minlength="16" maxlength="128">
+      <button class="primary" type="submit">Salvar e acessar</button>
+    </form>
+  </section>
+  <section id="presencas" aria-labelledby="responsesTitle" hidden>
+    <div class="panel-heading">
+      <div><p class="kicker">Respostas recebidas</p><h2 id="responsesTitle">Presenças</h2></div>
+      <button id="export" class="primary" type="button">Baixar CSV para Excel <span aria-hidden="true">↓</span></button>
+    </div>
+    <dl class="totals">
+      <div><dt>Confirmadas</dt><dd id="confirmed">0</dd></div>
+      <div><dt>Não vão</dt><dd id="declined">0</dd></div>
+      <div><dt>Pessoas previstas</dt><dd id="people">0</dd></div>
+      <div><dt>Respostas a revisar</dt><dd id="review">0</dd></div>
+    </dl>
+    <p class="caveat">Os totais são provisórios e incluem possíveis repetições do mesmo nome. Este painel mostra apenas as respostas recebidas.</p>
+    <p id="ignored" class="caveat" hidden></p>
+    <div class="filters">
+      <label>Buscar nome <input id="search" type="search" autocomplete="off" maxlength="120"></label>
+      <label>Filtrar resposta
+        <select id="filter"><option value="all">Todas</option><option value="sim">Confirmadas</option><option value="nao">Não vão</option><option value="review">Revisar possível repetição</option></select>
+      </label>
+    </div>
+    <p id="resultCount" class="count" role="status" aria-live="polite"></p>
+    <ul id="rows" class="responses" aria-label="Lista de respostas"></ul>
+    <button type="button" class="quiet" id="more" hidden>Mostrar mais</button>
+  </section>
+</main>
+<noscript>Ative o JavaScript para entrar no painel.</noscript>
+</body>
+</html>
