@@ -5,6 +5,8 @@ const catalog = new Map(require("./_gift-catalog"));
 const origin = "https://daniecaio.vercel.app";
 const handle = "caio-capuzzo";
 const base = "https://api.checkout.infinitepay.io";
+// Allow only exact InfinitePay buyer origins, not wildcard subdomains or redirects.
+const buyerOrigins = new Set(["https://buy.infinitepay.io", "https://checkout.infinitepay.io"]);
 const key = "dc:wedding-gifts:v1:{ledger}";
 const ordersKey = key + ":orders", paymentsKey = key + ":paid", verifyKey = key + ":verify";
 const validOrder = /^dcg-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
@@ -172,7 +174,7 @@ async function createTracked(c, req, res) {
     const provider = await json(base + "/links",payload,{},timeout);
     try {
       const url = new URL(provider?.link || provider?.url || provider?.checkout_url);
-      if (url.origin !== "https://buy.infinitepay.io" || url.username || url.password) throw new Error("unsafe");
+      if (!buyerOrigins.has(url.origin) || url.username || url.password) throw new Error("unsafe");
       return url.toString();
     } catch {
       const error = new Error("unexpected checkout");
