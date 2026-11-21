@@ -19,7 +19,7 @@
     gtag('js', new Date());
     gtag('config', 'AW-686108061');
   </script>
-  <script src="script.js?v=20261120-rsvp-companion" defer></script>
+  <script src="script.js?v=20261121-rsvp-page" defer></script>
 </head>
 <body class="wedding-home">
   <header class="topbar" id="topbar">
@@ -37,7 +37,7 @@
       <a href="#hospedagem">Hospedagem</a>
       <a href="gifts.html">Presentes</a>
       <a href="#momentos">Momentos</a>
-      <a class="nav-rsvp" href="#rsvp">Confirmar presença</a>
+      <a class="nav-rsvp" href="/confirmar-presenca.html">Confirmar presença</a>
     </nav>
   </header>
 
@@ -53,7 +53,7 @@
         </div>
         <p class="hero-time">Sábado, às 16h30</p>
         <div class="hero-guest-actions" role="group" aria-label="Informações para convidados">
-          <a class="button cream hero-confirm" href="#rsvp">Confirmar presença</a>
+          <a class="button cream hero-confirm" href="/confirmar-presenca.html">Confirmar presença</a>
           <div class="hero-guest-secondary">
             <a href="#celebracao">Como chegar</a>
             <a href="#hospedagem">Hospedagem</a>
@@ -170,7 +170,7 @@
             <h3 id="guestGuideFaq">Perguntas frequentes</h3>
             <details>
               <summary>Confirmo por aqui no site?</summary>
-              <p>Sim. Use o <a href="#rsvp">formulário de presença</a> para informar se vai comparecer.</p>
+              <p>Sim. Use o <a href="/confirmar-presenca.html">formulário de presença</a> para informar se vai comparecer.</p>
             </details>
             <details>
               <summary>Posso levar acompanhante?</summary>
@@ -319,39 +319,11 @@
         <img src="assets/logo-light-transparent.png" alt="Monograma de Danielle e Caio" class="rsvp-logo">
         <p class="eyebrow light">R.S.V.P.</p>
         <h2>Você vem<br><em>celebrar conosco?</em></h2>
-        <p>Sua presença é o nosso melhor presente. Em breve informaremos a data-limite para confirmação.</p>
+        <p>Sua presença é o nosso melhor presente. Conte para nós se você poderá estar com a gente.</p>
       </div>
-      <form class="rsvp-form reveal" id="rsvpForm" method="post" action="/api/rsvp">
-        <div class="field full">
-          <label for="guestName">Nome completo</label>
-          <input id="guestName" name="guestName" type="text" placeholder="Digite como está no convite" required autocomplete="name" maxlength="120">
-        </div>
-        <fieldset class="field full">
-          <legend>Você poderá comparecer?</legend>
-          <label class="radio"><input type="radio" name="attendance" value="sim" required><span>Sim, estarei lá!</span></label>
-          <label class="radio"><input type="radio" name="attendance" value="nao"><span>Infelizmente não poderei ir</span></label>
-        </fieldset>
-        <div class="field full rsvp-companion" id="rsvpCompanion" hidden>
-          <div class="rsvp-companion-action">
-            <button class="button cream" type="button" id="rsvpCompanionToggle" aria-controls="rsvpCompanionFields" aria-expanded="false" aria-describedby="rsvpCompanionHint">+ Adicionar acompanhante</button>
-            <small id="rsvpCompanionHint">Se o seu convite inclui acompanhante.</small>
-          </div>
-          <div class="field rsvp-companion-fields" id="rsvpCompanionFields" hidden>
-            <label for="companionName">Nome completo do acompanhante</label>
-            <input id="companionName" name="companionName" type="text" placeholder="Digite o nome do acompanhante" autocomplete="section-acompanhante name" minlength="2" maxlength="120" disabled>
-          </div>
-        </div>
-        <div class="field">
-          <label for="diet">Restrição alimentar</label>
-          <input id="diet" name="diet" type="text" maxlength="200" placeholder="Se houver">
-        </div>
-        <div class="field full">
-          <label for="message">Deixe um recado para nós</label>
-          <textarea id="message" name="message" rows="3" maxlength="1000" placeholder="Vamos adorar ler"></textarea>
-        </div>
-        <button class="button cream" type="submit">Enviar resposta <span aria-hidden="true">→</span></button>
-        <p class="form-note" id="formNote" aria-live="polite"></p>
-      </form>
+      <div class="rsvp-form reveal">
+        <a class="button cream" href="/confirmar-presenca.html">Confirmar presença <span aria-hidden="true">→</span></a>
+      </div>
     </section>
   </main>
 

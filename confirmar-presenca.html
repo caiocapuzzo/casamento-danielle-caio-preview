@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="only light">
+  <title>Confirmar presença | Danielle &amp; Caio</title>
+  <link rel="stylesheet" href="/rsvp-assets/resposta.css">
+  <script src="/rsvp-assets/confirmar.js" defer></script>
+</head>
+<body>
+  <main class="card">
+    <header>
+      <span class="sigil" aria-hidden="true">D <i>&amp;</i> C</span>
+      <p class="kicker">Danielle &amp; Caio · 21.08.2027</p>
+      <h1>Você vem celebrar conosco?</h1>
+      <p>Sua presença é o nosso melhor presente.</p>
+    </header>
+    <noscript><p class="notice">Ative o JavaScript para enviar sua resposta. Se não conseguir, fale com os noivos.</p></noscript>
+    <p class="help">Já respondeu? Use o link de edição que você guardou. Se não tiver o link, fale com os noivos.</p>
+    <form id="rsvpForm" method="post" action="/api/rsvp">
+        <div class="field full">
+          <label for="guestName">Nome completo</label>
+          <input id="guestName" name="guestName" type="text" placeholder="Digite como está no convite" required autocomplete="name" maxlength="120">
+        </div>
+        <fieldset class="field full">
+          <legend>Você poderá comparecer?</legend>
+          <label class="choice"><input type="radio" name="attendance" value="sim" required><span>Sim, estarei lá!</span></label>
+          <label class="choice"><input type="radio" name="attendance" value="nao"><span>Infelizmente não poderei ir</span></label>
+        </fieldset>
+        <div class="field full rsvp-companion" id="rsvpCompanion" hidden>
+          <div class="rsvp-companion-action">
+            <button class="secondary" type="button" id="rsvpCompanionToggle" aria-controls="rsvpCompanionFields" aria-expanded="false" aria-describedby="rsvpCompanionHint">+ Adicionar acompanhante</button>
+            <small id="rsvpCompanionHint">Se o seu convite inclui acompanhante.</small>
+          </div>
+          <div class="field rsvp-companion-fields" id="rsvpCompanionFields" hidden>
+            <label for="companionName">Nome completo do acompanhante</label>
+            <input id="companionName" name="companionName" type="text" placeholder="Digite o nome do acompanhante" autocomplete="section-acompanhante name" minlength="2" maxlength="120" disabled>
+          </div>
+        </div>
+        <div class="field">
+          <label for="diet">Restrição alimentar</label>
+          <input id="diet" name="diet" type="text" maxlength="200" placeholder="Se houver">
+        </div>
+        <div class="field full">
+          <label for="message">Deixe um recado para nós</label>
+          <textarea id="message" name="message" rows="3" maxlength="1000" placeholder="Vamos adorar ler"></textarea>
+        </div>
+        <button class="primary" type="submit">Enviar resposta <span aria-hidden="true">→</span></button>
+        <p class="notice" id="formNote" role="status" aria-live="polite"></p>
+      </form>
+    <section id="receipt" tabindex="-1" hidden aria-labelledby="receiptTitle">
+      <h2 id="receiptTitle">Resposta registrada</h2>
+      <p id="receiptMessage"></p>
+      <div id="receiptLink" hidden>
+        <p class="notice">Guarde este link para editar depois. Quem tiver acesso a ele pode alterar sua resposta.</p>
+        <label for="editLink">Seu link de edição</label>
+        <input type="text" id="editLink" readonly autocomplete="off" spellcheck="false">
+        <div class="receipt-actions">
+          <button type="button" class="primary" id="copyLink">Copiar link</button>
+          <a class="action secondary" id="openLink" rel="noopener noreferrer">Editar minha resposta</a>
+        </div>
+        <p id="copyStatus" role="status" class="help"></p>
+      </div>
+      <p id="noLink" hidden>Se precisar alterar esta resposta, fale com os noivos.</p>
+    </section>
+    <footer><a href="/">Voltar ao site do casamento</a></footer>
+  </main>
+</body>
+</html>

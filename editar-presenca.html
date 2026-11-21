@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="only light">
+  <title>Editar resposta | Danielle &amp; Caio</title>
+  <link rel="stylesheet" href="/rsvp-assets/resposta.css">
+  <script src="/rsvp-assets/editar.js" defer></script>
+</head>
+<body>
+  <main class="card">
+    <header>
+      <span class="sigil" aria-hidden="true">D <i>&amp;</i> C</span>
+      <p class="kicker">Danielle &amp; Caio · 21.08.2027</p>
+      <h1>Editar resposta</h1>
+      <p>Altere sua presença ou seu acompanhante sem enviar uma nova resposta.</p>
+    </header>
+    <p class="notice" id="status" role="status" aria-live="polite">Abrindo sua resposta…</p>
+    <button id="retry" class="secondary" type="button" hidden>Tentar novamente</button>
+    <form id="editor" method="post" action="/api/rsvp-edit" hidden>
+      <fieldset>
+        <legend>Você poderá comparecer?</legend>
+        <label class="choice"><input type="radio" name="attendance" value="sim" required> Sim, estarei lá!</label>
+        <label class="choice"><input type="radio" name="attendance" value="nao"> Infelizmente não poderei ir</label>
+      </fieldset>
+      <div class="companion" id="companion" hidden>
+        <button class="secondary" id="toggle" type="button" aria-controls="companionField" aria-expanded="false" aria-describedby="companionHint">+ Adicionar acompanhante</button>
+        <p class="help" id="companionHint">Se o seu convite inclui acompanhante.</p>
+        <div id="companionField" hidden>
+          <label for="companionName">Nome completo do acompanhante</label>
+          <input type="text" id="companionName" name="companionName" autocomplete="off" maxlength="120" minlength="2" aria-describedby="companionHint" disabled>
+        </div>
+      </div>
+      <button id="save" class="primary" type="submit">Salvar alterações <span aria-hidden="true">→</span></button>
+    </form>
+    <noscript><p class="notice">Ative o JavaScript para abrir sua resposta. Se não conseguir, fale com os noivos.</p></noscript>
+    <footer><a href="/">Voltar ao site do casamento</a></footer>
+  </main>
+</body>
+</html>
