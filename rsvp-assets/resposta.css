@@ -1,0 +1,43 @@
+:root {
+  color-scheme: only light;
+  --olive: #56603c; --ink: #283523; --paper: #fbf9f1; --cream: #f4f1e7; --edge: #c7c4b0;
+  font: 1rem/1.55 system-ui, sans-serif;
+  background: var(--cream); color: var(--ink);
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; padding: clamp(16px, 6vw, 56px) 12px; }
+.card { max-width: 38rem; min-width: 0; margin: 0 auto; background: var(--paper); border: 1px solid var(--edge); padding: clamp(18px, 5vw, 44px); }
+header { text-align: center; margin-bottom: 1.4rem; }
+h1 { margin: 0.4rem 0; font: normal clamp(2rem, 8vw, 3.4rem)/1.08 Georgia, serif; }
+header p { margin: .5rem auto 0; max-width: 37ch; }
+.kicker { color: var(--olive); text-transform: uppercase; letter-spacing: .12em; font-size: .76rem; font-weight: 700; }
+.sigil { display: inline-grid; place-content: center; grid-auto-flow: column; gap: .18em; width: 4.1rem; height: 4.1rem; color: var(--olive); border: 1px solid var(--edge); border-radius: 50%; font: normal 1.2rem Georgia, serif; }
+.sigil i { margin-inline: .03em; }
+.notice:not(:empty) { background: var(--cream); border-inline-start: 3px solid var(--olive); padding: .75rem 1rem; overflow-wrap: anywhere; }
+form { display: grid; gap: 1rem; }
+fieldset { min-inline-size: 0; margin: 0; border: 0; padding: 0; }
+legend, label:not(.choice) { display: block; font-weight: 650; margin-bottom: .25rem; }
+.guest { margin: 0; font: italic 1.23rem Georgia, serif; overflow-wrap: anywhere; }
+.choice { min-height: 46px; display: flex; gap: .6rem; align-items: center; cursor: pointer; }
+input[type="radio"] { accent-color: var(--olive); flex: 0 0 1.05rem; width: 1.05rem; height: 1.05rem; margin: 0; }
+input[type="text"], textarea { width: 100%; min-width: 0; min-height: 46px; padding: .7rem; border: 1px solid var(--olive); border-radius: .15rem; color: var(--ink); background: #fff; font: inherit; }
+textarea { resize: vertical; }
+button, .action { font: inherit; font-weight: 650; min-height: 46px; padding: .55rem .9rem; cursor: pointer; border: 1px solid var(--olive); border-radius: .15rem; }
+button:disabled { opacity: .65; cursor: default; }
+.primary { background: var(--olive); color: #fff; }
+.secondary { background: transparent; color: var(--ink); }
+.help { margin: .25rem 0 .6rem; font-size: .88rem; color: var(--olive); }
+a { color: var(--ink); text-underline-offset: .19em; padding-block: .64rem; }
+.action { display: inline-flex; align-items: center; text-decoration: none; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+footer { border-top: 1px solid var(--edge); text-align: center; margin-top: 1.8rem; padding-top: .5rem; font-size: .92rem; }
+footer a { display: inline-block; min-height: 44px; }
+@media (min-width: 520px) { .primary { justify-self: start; } }
+.rsvp-companion-action { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem .7rem; }
+.rsvp-companion-action small { color: var(--olive); font-size: .88rem; }
+.rsvp-companion-fields { margin-top: .65rem; }
+.receipt-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-block-start: .75rem; }
+#receipt:focus { outline: 0; }
+#receipt h2 { margin: 0; font: normal 1.85rem Georgia, serif; }
+#formNote { margin-block: 0; }

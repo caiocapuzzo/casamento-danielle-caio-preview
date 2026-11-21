@@ -113,100 +113,6 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
-function initRsvp() {
-  const rsvpForm = document.querySelector("#rsvpForm");
-  const formNote = document.querySelector("#formNote");
-  if (!rsvpForm || !formNote) return;
-
-  const button = rsvpForm.querySelector('[type="submit"]');
-  const companion = document.querySelector("#rsvpCompanion");
-  const companionToggle = document.querySelector("#rsvpCompanionToggle");
-  const companionFields = document.querySelector("#rsvpCompanionFields");
-  const companionName = document.querySelector("#companionName");
-  let addingCompanion = false;
-
-  function syncCompanion() {
-    if (!companion || !companionToggle || !companionFields || !companionName) return;
-    const attending = Boolean(rsvpForm.querySelector('input[name="attendance"][value="sim"]:checked'));
-    if (!attending) addingCompanion = false;
-    companion.hidden = !attending;
-    companionFields.hidden = !addingCompanion;
-    companionName.disabled = !addingCompanion;
-    companionName.required = addingCompanion;
-    if (!addingCompanion) {
-      companionName.value = "";
-      companionName.setCustomValidity("");
-    }
-    companionToggle.setAttribute("aria-expanded", String(addingCompanion));
-    companionToggle.textContent = addingCompanion ? "Remover acompanhante" : "+ Adicionar acompanhante";
-  }
-
-  companionToggle?.addEventListener("click", () => {
-    addingCompanion = !addingCompanion;
-    syncCompanion();
-    if (addingCompanion) companionName.focus();
-  });
-  companionName?.addEventListener("input", () => companionName.setCustomValidity(""));
-  rsvpForm.addEventListener("change", (event) => {
-    if (event.target.name === "attendance") syncCompanion();
-  });
-  syncCompanion();
-
-  let pending = null;
-  let sending = false;
-  rsvpForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (sending) return;
-    const values = Object.fromEntries(new FormData(rsvpForm).entries());
-    const signature = JSON.stringify(values);
-    if (values.companionName !== undefined) {
-      if (values.attendance !== "sim" || values.companionName.trim().length < 2) {
-        companionName.setCustomValidity("Informe o nome completo do acompanhante.");
-        companionName.reportValidity();
-        return;
-      }
-      values.companions = "1";
-    }
-    try {
-      if (!pending || pending.signature !== signature) {
-        pending = { signature, id: window.crypto.randomUUID() };
-      }
-      sending = true;
-      if (button) button.disabled = true;
-      formNote.textContent = "Enviando sua confirmação…";
-      const response = await fetch("/api/rsvp", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, submissionId: pending.id }),
-        signal: AbortSignal.timeout(12000),
-      });
-      const result = await response.json();
-      if (!response.ok || result.ok !== true) {
-        formNote.textContent = response.status === 429
-          ? "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente."
-          : "Não foi possível confirmar o envio. Confira os dados ou tente novamente.";
-        return;
-      }
-      formNote.textContent = values.attendance === "sim"
-        ? "Presença confirmada. Que alegria ter você com a gente!"
-        : "Resposta registrada. Sentiremos sua falta!";
-      // Do not wipe a guest's edits made while the previous response was sending.
-      if (JSON.stringify(Object.fromEntries(new FormData(rsvpForm).entries())) === signature) {
-        rsvpForm.reset();
-        addingCompanion = false;
-        syncCompanion();
-      }
-      pending = null;
-    } catch {
-      formNote.textContent = "Não foi possível confirmar o envio. Tente novamente.";
-    } finally {
-      sending = false;
-      if (button) button.disabled = false;
-    }
-  });
-}
-
 function initGalleryCarousel() {
   const carousel = document.querySelector("#galleryCarousel");
   const track = document.querySelector("#galleryTrack");
@@ -759,6 +665,5 @@ setInterval(updateCountdown, 1000);
 setInterval(updateLoveCounter, 1000);
 initNavigation();
 initReveal();
-initRsvp();
 initGalleryCarousel();
 initGiftStore();
