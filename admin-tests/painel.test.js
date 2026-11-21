@@ -9,7 +9,7 @@ const ip="192.0.2.12";
 const browserKey="A".repeat(43);
 const temp="synthetic-Pr-Hn9_x67U_T8";
 const next="correct-H9k_32-drift!f7";
-const encode=(pass,salt)=>"scrypt-v1$"+salt+"$"+scryptSync(pass,Buffer.from(salt,"hex"),32,{N:32768,r:8,p:1,maxmem:67108864}).toString("hex");
+const encode=(pass,salt)=>"scrypt-v1$"+salt+"$"+scryptSync(pass,Buffer.from(salt,"hex"),32,{N:32768,r:8,p:3,maxmem:67108864}).toString("hex");
 const uuid=n=>String(n).padStart(8,"0")+"-1010-4010-8010-101010101010";
 const rows=[
   uuid(1),JSON.stringify({guestName:"João de Teste",attendance:"sim",companions:1,companionName:"Pessoa Companheira",receivedAt:"2026-11-21T16:10:00Z",diet:"PRIVATE_1",message:"PRIVATE_2"}),
@@ -37,7 +37,13 @@ function setup(){
     }
     if(op==="EVAL"){
       const [script,n,...params]=a,args=params.slice(n),k=params.slice(0,n);
-      if(script.startsWith("-- rsvp_admin_limit")){
+      if(script.startsWith("-- rsvp_admin_read_credential")){
+        operations.push("read-credential-primary");
+        value=hashes.get(k[0]+":credential")??null;
+      } else if(script.startsWith("-- rsvp_admin_role")){
+        operations.push("read-session-primary");
+        value=s.get(k[0])===args[0]?"active":s.get(k[1])===args[1]?"change":"signed-out";
+      } else if(script.startsWith("-- rsvp_admin_limit")){
         const count=(s.get(k[0])??0)+1;
         const all=(s.get(k[1])??0)+1;
         s.set(k[0],count);s.set(k[1],all);value=+(count<=12&&all<=80);
@@ -133,7 +139,8 @@ test("persistent per-network limiter and secure HTML assets",async()=>{
   const capped=await req("",{action:"login",username:"caio",password:temp});
   assert.equal(capped.code,429);
   assert.equal(capped.headers["Retry-After"],"300");
-  assert.equal(f.operations.filter(x=>x==="HGET").length,12);
+  assert.equal(f.operations.filter(x=>x==="read-credential-primary").length,12);
+  assert.ok(!f.operations.includes("HGET"));
   const page=readFileSync("painel-presencas.html","utf8"), frontend=readFileSync("admin-assets/presencas.js","utf8");
   const config=JSON.parse(readFileSync("vercel.json","utf8"));
   assert.match(page,/name="robots" content="noindex/);
@@ -141,4 +148,47 @@ test("persistent per-network limiter and secure HTML assets",async()=>{
   assert.doesNotMatch(frontend,/innerHTML|localStorage|sessionStorage/);
   assert.match(frontend,/\.textContent\s*=/);
   assert.equal(config.headers[0].source,"/painel-presencas.html");
+});
+
+test("frontend active session can retry after transient response failure",async()=>{
+  const { runInNewContext }=require("node:vm");
+  const { webcrypto }=require("node:crypto");
+  const nodes=new Map(), requests=[];
+  const el=id=>{
+    if(!nodes.has(id))nodes.set(id,{hidden:true,value:"",textContent:"",events:{},addEventListener(n,fn){this.events[n]=fn;},
+      replaceChildren(){},append(){},focus(){},reset(){},querySelector(){return el("submit");}});
+    return nodes.get(id);
+  };
+  const script=readFileSync("admin-assets/presencas.js","utf8");
+  let authenticated=false, responses=0;
+  const result=(status,body)=>({status,ok:status===200,json:async()=>body});
+  runInNewContext(script,{
+    document:{getElementById:el,createDocumentFragment:()=>el("fragment"),createElement:()=>el("tag")},
+    window:{addEventListener(){}},crypto:webcrypto,btoa,
+    fetch:async(path,options)=>{
+      requests.push(path);
+      if(path.endsWith("?view=session"))return result(200,{state:authenticated?"active":"signed-out"});
+      if(options.method==="POST"){
+        authenticated=true;
+        assert.match(options.headers["X-RSVP-Panel-Key"],/^[A-Za-z0-9_-]{43}$/);
+        return result(200,{state:"active"});
+      }
+      assert.match(options.headers["X-RSVP-Panel-Key"],/^[A-Za-z0-9_-]{43}$/);
+      responses++;
+      return responses===1?result(503,{error:"indisponivel"}):
+        result(200,{rows:[],counts:{confirmed:0,declined:0,people:0,review:0,ignored:0}});
+    }
+  });
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(el("login").hidden,false);
+  el("username").value="caio";el("password").value="synthetic";
+  await el("loginForm").events.submit({preventDefault(){},currentTarget:el("loginForm")});
+  assert.equal(el("retry").hidden,false);
+  assert.equal(el("logout").hidden,false);
+  assert.match(el("notice").textContent,/Você entrou.*não carregaram/);
+  el("retry").events.click();
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(el("presencas").hidden,false);
+  assert.equal(el("retry").hidden,true);
+  assert.equal(requests.filter(x=>x.endsWith("?view=responses")).length,2);
 });
