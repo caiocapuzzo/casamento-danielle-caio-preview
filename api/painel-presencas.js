@@ -15,7 +15,7 @@ const KDF_RE = /^scrypt-v1\$([a-f0-9]{32})\$([a-f0-9]{64})$/;
 const dummy = "scrypt-v1$00000000000000000000000000000000$0000000000000000000000000000000000000000000000000000000000000000";
 const keyDigest = token => createHash("sha256").update(token).digest("hex");
 const token = () => randomBytes(32).toString("base64url");
-const kdf = (pass, salt) => derive(pass, Buffer.from(salt, "hex"), 32, { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 });
+const kdf = (pass, salt) => derive(pass, Buffer.from(salt, "hex"), 32, { N: 32768, r: 8, p: 3, maxmem: 64 * 1024 * 1024 });
 async function verifies(pass, encoded) {
   const fields = KDF_RE.exec(encoded || "") || KDF_RE.exec(dummy);
   const actual = await kdf(pass, fields[1]);
@@ -47,6 +47,15 @@ redis.call('HSET',KEYS[1],'credential',ARGV[2])
 redis.call('DEL',KEYS[2])
 redis.call('SET',KEYS[3],ARGV[4],'EX',tonumber(ARGV[3]))
 return 1
+`;
+// Upstash EVAL (not EVAL_RO) routes these consistency-critical checks to the write primary.
+const ROLE = `-- rsvp_admin_role
+if redis.call('GET',KEYS[1]) == ARGV[1] then return 'active' end
+if redis.call('GET',KEYS[2]) == ARGV[2] then return 'change' end
+return 'signed-out'
+`;
+const READ_CREDENTIAL = `-- rsvp_admin_read_credential
+return redis.call('HGET',KEYS[1],'credential')
 `;
 const LOGOUT = `-- rsvp_admin_logout
 if redis.call('GET',KEYS[1]) == ARGV[2] then redis.call('DEL',KEYS[1]) end
@@ -95,14 +104,9 @@ async function redis(c, ...args) {
 }
 const key = suffix => ADMIN + ":" + suffix;
 const sessionKey = digest => key("session:" + digest);
-function safeEqual(a,b) {
-  return typeof a === "string" && a.length === b.length && timingSafeEqual(Buffer.from(a),Buffer.from(b));
-}
 async function role(c,digest,cap) {
   if (!digest || !cap) return "signed-out";
-  if (safeEqual(await redis(c,"GET",sessionKey(digest)),cap)) return "active";
-  if (safeEqual(await redis(c,"GET",key("pending")),digest+":"+cap)) return "change";
-  return "signed-out";
+  return redis(c,"EVAL",ROLE,2,sessionKey(digest),key("pending"),cap,digest+":"+cap);
 }
 async function rate(c, req) {
   const input = header(req,"x-vercel-forwarded-for").split(",")[0].trim();
@@ -213,7 +217,7 @@ function csv(result) {
 
 module.exports = async (req,res) => {
   res.setHeader("Cache-Control","private, no-store, max-age=0");
-  res.setHeader("Vary","Cookie");
+  res.setHeader("Vary","Cookie, X-RSVP-Panel-Key");
   res.setHeader("X-Robots-Tag","noindex, nofollow, noarchive");
   res.setHeader("X-Content-Type-Options","nosniff");
   res.setHeader("X-Frame-Options","DENY");
@@ -246,7 +250,7 @@ module.exports = async (req,res) => {
         if (!rawPass(data.password) || !data.password || typeof data.username !== "string" || data.username.length > 64) {
           return respond(res,400,{error:"entrada"});
         }
-        const saved = await redis(c,"HGET",key("state"),"credential");
+        const saved = await redis(c,"EVAL",READ_CREDENTIAL,1,key("state"));
         const setup = !saved ? bootstrap() : null;
         const ok = await verifies(data.password,saved || setup?.encoded || dummy);
         if (!ok || data.username !== OWNER || (!saved && !setup)) return respond(res,401,{error:"credenciais"});
@@ -286,6 +290,7 @@ module.exports = async (req,res) => {
     if (state !== "active") return respond(res,401,{error:"sessao"});
     if (view !== "responses" && view !== "csv") return respond(res,404,{error:"indisponivel"});
     const result = await list(c);
+    if ((await role(c,digest,cap)) !== "active") return respond(res,401,{error:"sessao"});
     if (view === "responses") return respond(res,200,result);
     res.setHeader("Content-Type","text/csv; charset=utf-8");
     res.setHeader("Content-Disposition",'attachment; filename="presencas-casamento.csv"');
