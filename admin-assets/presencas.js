@@ -2,6 +2,11 @@
 const api = "/api/painel-presencas";
 const $ = id => document.getElementById(id);
 const views = ["login","change","presencas"];
+const tabs = [{id:"tabPresencas",panel:"presencas"},{id:"tabPresentes",panel:"presentes"}];
+let selectedTab = 0;
+let giftEpoch = 0;
+const currency = new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"});
+const day = new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeZone:"America/Sao_Paulo"});
 let rows = [];
 let limit = 30;
 let epoch = 0;
@@ -26,6 +31,9 @@ function view(target) {
   $("retry").hidden=true;
   views.forEach(id=>{$(id).hidden = id !== target;});
   $("logout").hidden = target !== "presencas" && target !== "change";
+  $("panelTabs").hidden = target !== "presencas";
+  $("presentes").hidden = true;
+  if (target === "presencas") setTab(0,false);
 }
 async function call(where, data) {
   const response = await fetch(api + where, {
@@ -41,7 +49,17 @@ async function call(where, data) {
   }
   return body;
 }
+function blankGifts() {
+  ++giftEpoch;
+  $("giftRows").replaceChildren();
+  $("giftTotals").hidden=true;
+  $("giftStatus").textContent="";
+  $("giftRetry").hidden=true;
+  $("giftOrderCount").textContent="";
+  $("giftAmount").textContent="";
+}
 function blank() {
+  blankGifts();
   rows=[];
   $("rows").replaceChildren();
   $("resultCount").textContent="";
@@ -88,6 +106,64 @@ function render() {
   $("resultCount").textContent=visible.length
     ? `Mostrando ${Math.min(limit,visible.length)} de ${visible.length} respostas.`
     : (rows.length?"Nenhuma resposta para este filtro.":"Nenhuma resposta recebida ainda.");
+}
+function setTab(index,load=true) {
+  if ($("panelTabs").hidden) return;
+  selectedTab=index;
+  tabs.forEach((tab,i)=>{
+    $(tab.id).setAttribute("aria-selected",String(i===index));
+    $(tab.id).tabIndex=i===index?0:-1;
+    $(tab.panel).hidden=i!==index;
+  });
+  if (index===1&&load) void refreshGifts();
+  else blankGifts();
+}
+async function refreshGifts() {
+  blankGifts();
+  const n=giftEpoch;
+  $("giftStatus").textContent="Carregando pagamentos verificados…";
+  try {
+    const result=await call("?view=gifts");
+    if(n!==giftEpoch || selectedTab!==1)return;
+    if(result.state==="disabled") {
+      $("giftStatus").textContent="Histórico ainda não sincronizado. Esta aba ainda não acompanha pagamentos.";
+      return;
+    }
+    const since=new Date(result.since);
+    if(result.state!=="ready"||!result.since||!Number.isFinite(since.getTime())) throw new Error("dados");
+    $("giftStatus").textContent="Acompanhamento de novos pedidos desde "+day.format(since)+
+      ". Compras anteriores não aparecem automaticamente aqui."+
+      (result.captureActive?"":" O registro de novos pedidos está pausado.")+
+      (result.orders.length===0?" Nenhum pagamento verificado desde o início do acompanhamento.":"");
+    $("giftTotals").hidden=false;
+    $("giftOrderCount").textContent=String(result.orders.length);
+    $("giftAmount").textContent=currency.format(result.totalCents/100);
+    const fragment=document.createDocumentFragment();
+    for(const order of result.orders) {
+      const li=node("li","","gift-order");
+      const time=node("time","Confirmação: "+date.format(new Date(order.confirmedAt)));
+      time.dateTime=order.confirmedAt;
+      const value=node("strong","Valor do pedido: "+currency.format(order.amountCents/100));
+      const items=node("ul");
+      for(const item of order.items) {
+        const line=node("li","","gift-receipt-item");
+        line.append(node("span",String(item.quantity)+" ×"),node("span",item.title));
+        items.append(line);
+      }
+      li.append(time,value,items);
+      fragment.append(li);
+    }
+    $("giftRows").replaceChildren(fragment);
+  } catch(err) {
+    if(n!==giftEpoch||selectedTab!==1)return;
+    if(err.status===401) {
+      panelKey="";blank();view("login");notice("A sessão expirou. Entre novamente.");
+    } else {
+      blankGifts();
+      $("giftStatus").textContent="Não foi possível consultar os pagamentos agora.";
+      $("giftRetry").hidden=false;
+    }
+  }
 }
 async function show(state,n) {
   if(n!==epoch)return;
@@ -183,6 +259,17 @@ $("export").addEventListener("click",async()=>{
   finally { button.disabled=false; }
 });
 for (const id of ["search","filter"]) $(id).addEventListener(id==="search"?"input":"change",()=>{limit=30;render();});
+tabs.forEach((tab,index)=>{
+  $(tab.id).addEventListener("click",()=>setTab(index));
+  $(tab.id).addEventListener("keydown",event=>{
+    const next={ArrowLeft:(index+tabs.length-1)%tabs.length,ArrowRight:(index+1)%tabs.length,Home:0,End:tabs.length-1}[event.key];
+    if(next===undefined)return;
+    event.preventDefault();
+    setTab(next);
+    $(tabs[next].id).focus();
+  });
+});
+$("giftRetry").addEventListener("click",()=>void refreshGifts());
 $("retry").addEventListener("click",()=>void refresh());
 $("more").addEventListener("click",()=>{limit+=30;render();});
 window.addEventListener("pagehide",()=>{++epoch;panelKey="";$("loginForm").reset();$("changeForm").reset();blank();view(null);});

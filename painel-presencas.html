@@ -6,16 +6,16 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="color-scheme" content="only light">
   <meta name="referrer" content="no-referrer">
-  <title>Painel de presenças | Danielle &amp; Caio</title>
-  <link rel="stylesheet" href="/admin-assets/presencas.css">
-  <script src="/admin-assets/presencas.js" defer></script>
+  <title>Painel do casamento | Danielle &amp; Caio</title>
+  <link rel="stylesheet" href="/admin-assets/presencas.css?v=casamento-v2">
+  <script src="/admin-assets/presencas.js?v=casamento-v2" defer></script>
 </head>
 <body>
 <main>
   <header class="cover">
     <span class="mark" aria-hidden="true">D <i>&amp;</i> C</span>
     <p class="kicker">Danielle &amp; Caio · Área privada</p>
-    <h1>Painel de <em>presenças</em></h1>
+    <h1>Painel do <em>casamento</em></h1>
     <button class="quiet" id="logout" type="button" hidden>Sair</button>
   </header>
   <p id="notice" class="notice" role="status" aria-live="polite">Verificando acesso…</p>
@@ -42,7 +42,11 @@
       <button class="primary" type="submit">Salvar e acessar</button>
     </form>
   </section>
-  <section id="presencas" aria-labelledby="responsesTitle" hidden>
+  <div class="panel-tabs" id="panelTabs" role="tablist" aria-label="Seções do painel" hidden>
+    <button id="tabPresencas" type="button" role="tab" aria-selected="true" aria-controls="presencas">Presenças</button>
+    <button id="tabPresentes" type="button" role="tab" aria-selected="false" aria-controls="presentes" tabindex="-1">Presentes</button>
+  </div>
+  <section id="presencas" role="tabpanel" aria-labelledby="tabPresencas" hidden>
     <div class="panel-heading">
       <div><p class="kicker">Respostas recebidas</p><h2 id="responsesTitle">Presenças</h2></div>
       <button id="export" class="primary" type="button">Baixar CSV para Excel <span aria-hidden="true">↓</span></button>
@@ -64,6 +68,16 @@
     <p id="resultCount" class="count" role="status" aria-live="polite"></p>
     <ul id="rows" class="responses" aria-label="Lista de respostas"></ul>
     <button type="button" class="quiet" id="more" hidden>Mostrar mais</button>
+  </section>
+  <section id="presentes" role="tabpanel" aria-labelledby="tabPresentes" hidden>
+    <div class="panel-heading"><div><p class="kicker">Lista de presentes</p><h2>Pagamentos verificados</h2></div></div>
+    <p id="giftStatus" class="caveat" role="status" aria-live="polite"></p>
+    <button class="quiet" id="giftRetry" type="button" hidden>Tentar novamente</button>
+    <dl id="giftTotals" class="totals gift-totals" hidden>
+      <div><dt>Compras verificadas</dt><dd id="giftOrderCount">0</dd></div>
+      <div><dt>Total dos pedidos confirmados</dt><dd id="giftAmount">R$ 0,00</dd></div>
+    </dl>
+    <ul id="giftRows" class="responses" aria-label="Compras com pagamento verificado"></ul>
   </section>
 </main>
 <noscript>Ative o JavaScript para entrar no painel.</noscript>

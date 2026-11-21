@@ -156,7 +156,7 @@ test("frontend active session can retry after transient response failure",async(
   const nodes=new Map(), requests=[];
   const el=id=>{
     if(!nodes.has(id))nodes.set(id,{hidden:true,value:"",textContent:"",events:{},addEventListener(n,fn){this.events[n]=fn;},
-      replaceChildren(){},append(){},focus(){},reset(){},querySelector(){return el("submit");}});
+      replaceChildren(){},append(){},focus(){},reset(){},setAttribute(){},querySelector(){return el("submit");}});
     return nodes.get(id);
   };
   const script=readFileSync("admin-assets/presencas.js","utf8");

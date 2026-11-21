@@ -1,3 +1,4 @@
+const { captureConfigured, createTracked } = require("./_gift-ledger");
 const INFINITEPAY_API_URL = "https://api.checkout.infinitepay.io/links";
 const ALLOWED_HANDLE = "caio-capuzzo";
 
@@ -20,6 +21,8 @@ const readBody = async (req) => {
 };
 
 module.exports = async (req, res) => {
+  const tracking = captureConfigured(req);
+  if (tracking && req.method === "POST") return createTracked(tracking, req, res);
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
