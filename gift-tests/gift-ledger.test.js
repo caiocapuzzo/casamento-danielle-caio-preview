@@ -210,3 +210,17 @@ test("definitive tracked link rejection or unsafe link falls back once to canoni
   assert.equal((await call(checkout,"POST",fx)).status,502);
   assert.equal(s.links.length,5);
 });
+
+test("accepts both exact HTTPS InfinitePay checkout origins without fallback; rejects impersonation",async t=>{
+  const s=mock(t);
+  s.link="https://checkout.infinitepay.io/synthetic-merchant/synthetic-order";
+  assert.equal((await call(checkout,"POST",fx)).body.link,s.link);
+  assert.equal(s.links.length,1);
+  assert.ok(s.links[0].webhook_url);
+  for (const unsafe of ["https://checkout.infinitepay.io.evil.example.invalid/a",
+    "https://checkout.infinitepay.io:444/a","http://checkout.infinitepay.io/a",
+    "https://user@checkout.infinitepay.io/a"]) {
+    s.link=unsafe;
+    assert.equal((await call(checkout,"POST",fx)).status,502);
+  }
+});
