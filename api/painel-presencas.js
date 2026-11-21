@@ -215,6 +215,30 @@ function csv(result) {
   return "\ufeff" + [headers,...rows].map(r=>r.map(csvCell).join(";")).join("\r\n") + "\r\n";
 }
 
+function summarizeGifts(result) {
+  if (result?.state === "disabled") return {state:"disabled",since:null,orders:[],totalCents:null};
+  const iso = value => typeof value === "string" && /^\d{4}-\d\d-\d\dT/.test(value) && Number.isFinite(Date.parse(value));
+  if (result?.state !== "ready" || !iso(result.since) || !Array.isArray(result.orders) || result.orders.length > MAX_ROWS) {
+    throw new Error("gift-format");
+  }
+  let totalCents = 0;
+  const orders = result.orders.map(order => {
+    if (!iso(order?.confirmedAt) || Date.parse(order.confirmedAt) < Date.parse(result.since) ||
+        !Number.isSafeInteger(order.amountCents) || order.amountCents < 1 ||
+        !Array.isArray(order.items) || order.items.length < 1 || order.items.length > 200) throw new Error("gift-order");
+    totalCents += order.amountCents;
+    if (!Number.isSafeInteger(totalCents)) throw new Error("gift-limit");
+    const items = order.items.map(item => {
+      const title = cleanText(item?.title,160);
+      if (!title || !Number.isSafeInteger(item.quantity) || item.quantity < 1) throw new Error("gift-item");
+      return {title,quantity:item.quantity};
+    });
+    return {confirmedAt:new Date(order.confirmedAt).toISOString(),amountCents:order.amountCents,items};
+  });
+  orders.sort((a,b)=>b.confirmedAt.localeCompare(a.confirmedAt));
+  return {state:"ready",since:new Date(result.since).toISOString(),captureActive:result.captureActive === true,orders,totalCents};
+}
+
 module.exports = async (req,res) => {
   res.setHeader("Cache-Control","private, no-store, max-age=0");
   res.setHeader("Vary","Cookie, X-RSVP-Panel-Key");
@@ -288,6 +312,14 @@ module.exports = async (req,res) => {
     const state = await role(c,digest,cap);
     if (view === "session") return respond(res,200,{state});
     if (state !== "active") return respond(res,401,{error:"sessao"});
+    if (view === "gifts") {
+      // Import and query the ledger only after enforcing the existing owner session.
+      const { listConfirmedGifts } = require("./_gift-ledger");
+      const giftResult = await listConfirmedGifts();
+      const result = summarizeGifts(giftResult);
+      if ((await role(c,digest,cap)) !== "active") return respond(res,401,{error:"sessao"});
+      return respond(res,200,result);
+    }
     if (view !== "responses" && view !== "csv") return respond(res,404,{error:"indisponivel"});
     const result = await list(c);
     if ((await role(c,digest,cap)) !== "active") return respond(res,401,{error:"sessao"});
