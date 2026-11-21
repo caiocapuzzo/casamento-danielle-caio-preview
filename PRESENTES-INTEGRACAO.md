@@ -10,7 +10,7 @@ O projeto mantém o checkout anterior se nenhuma flag nova estiver ativa. O pain
    - `WEDDING_GIFTS_TRACKING_SINCE`: início real planejado da captura, timestamp UTC `YYYY-MM-DDTHH:mm:ssZ`, não no futuro quando o deploy começar a receber consultas. Exibe a referência de cobertura, não garante completude.
    - `WEDDING_GIFTS_CAPTURE_NEW=true`: habilita geração de novos links com tracking. Alterações de variáveis exigem novo deployment.
 3. Para pausar novas capturas, desligue apenas `WEDDING_GIFTS_CAPTURE_NEW` e faça novo deployment. Deixe as duas outras variáveis e as rotas existentes ativas: links emitidos pela InfinitePay não podem trocar o webhook depois, e podem continuar válidos. Mantenha os registros e o histórico, não volte para um commit anterior ao webhook sem considerar reconciliação.
-4. Se o armazenamento estiver fora do ar, chegue a um limite operacional ou se a captura estiver pausada, a loja continua abrindo checkout, mas esses pedidos podem não aparecer no painel. Confira as compras e os estornos diretamente na InfinitePay. Não reaproveite carrinhos ou links antigos como comprovantes.
+4. Se o armazenamento estiver fora do ar, atingir um limite operacional, se a captura estiver pausada ou se a InfinitePay recusar o formato de um link rastreado e aceitar o alternativo, a loja continua abrindo checkout, mas esses pedidos podem não aparecer no painel. Confira as compras e os estornos diretamente na InfinitePay. Não reaproveite carrinhos ou links antigos como comprovantes.
 
 ## Critérios
 

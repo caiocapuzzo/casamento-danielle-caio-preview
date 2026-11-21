@@ -35,12 +35,16 @@ function mock(t) {
   t.after(()=>{globalThis.fetch=original;for (const [k,v] of before) if(v===absent) delete process.env[k]; else process.env[k]=v;});
   const state = { links:[], checks:[], calls:[], orders:new Map(), payments:new Map(),
     throttles:new Map(), failStore:false, amount:fx.items[0].price*2, truth:true, inject:{},
-    link:"https://buy.infinitepay.io/synthetic-path" };
+    link:"https://buy.infinitepay.io/synthetic-path",rejectTracked:null,trackedLink:null };
   globalThis.fetch = async (url,{body})=>{
     body=JSON.parse(body);
     if (url==="https://api.checkout.infinitepay.io/links") {
       state.links.push(body);
-      if (body.webhook_url) assert.ok(state.orders.has(body.order_nsu));
+      if (body.webhook_url) {
+        assert.ok(state.orders.has(body.order_nsu));
+        if (state.rejectTracked) return Response.json({error:"synthetic rejection"},{status:state.rejectTracked});
+        if (state.trackedLink) return Response.json({url:state.trackedLink});
+      }
       return Response.json({url:state.link});
     }
     if (url==="https://api.checkout.infinitepay.io/payment_check") {
@@ -180,4 +184,29 @@ test("validates only with provider, does not trust callback body, handles duplic
   }
   const old=callback("dcg-00000000-0000-4000-8000-000000000000","tx-Synthetic-another");
   const prev=s.checks.length;assert.equal((await call(webhook,"POST",old)).status,200);assert.equal(s.checks.length,prev);
+});
+
+test("definitive tracked link rejection or unsafe link falls back once to canonical untracked checkout",async t=>{
+  const s=mock(t);
+  s.rejectTracked=422;
+  assert.equal((await call(checkout,"POST",fx)).body.link,s.link);
+  assert.equal(s.links.length,2);
+  const [tracked,fallback]=s.links;
+  assert.ok(tracked.webhook_url);
+  assert.ok(!("webhook_url" in fallback));
+  assert.notEqual(tracked.order_nsu,fallback.order_nsu);
+  assert.ok(!s.orders.has(fallback.order_nsu));
+  assert.deepEqual(fallback.items,tracked.items);
+  assert.equal(fallback.redirect_url,origin+"/api/gift-payment-return");
+  assert.equal((await call(webhook,"POST",callback(fallback.order_nsu))).status,200);
+  assert.equal(s.checks.length,0);
+  assert.deepEqual((await listConfirmedGifts()).orders,[]);
+  s.rejectTracked=null;
+  s.trackedLink="https://other.example.invalid/private";
+  assert.equal((await call(checkout,"POST",fx)).body.link,s.link);
+  assert.equal(s.links.length,4);
+  s.rejectTracked=503;
+  s.trackedLink=null;
+  assert.equal((await call(checkout,"POST",fx)).status,502);
+  assert.equal(s.links.length,5);
 });

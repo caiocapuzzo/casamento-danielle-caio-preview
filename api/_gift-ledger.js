@@ -86,7 +86,11 @@ function readBody(req, limit = 20000) {
 async function json(url, body, headers = {}, timeout = 3500) {
   const result = await fetch(url,{method:"POST",redirect:"error",signal:AbortSignal.timeout(timeout),
     headers:{"content-type":"application/json", ...headers},body:JSON.stringify(body)});
-  if (!result.ok) throw new Error("upstream");
+  if (!result.ok) {
+    const error = new Error("upstream");
+    error.upstreamStatus = result.status;
+    throw error;
+  }
   // Real JSON responses here are small; cap before JSON decode, even for chunked responses.
   let raw = "", bytes = 0;
   if (result.body && typeof result.body.getReader === "function") {
@@ -164,12 +168,31 @@ async function createTracked(c, req, res) {
     ...(tracked ? { webhook_url:origin + "/api/gift-payment-webhook" } : {}),
     ...(Object.keys(customer).length ? { customer } : {}),
   };
+  async function linkFor(payload, timeout) {
+    const provider = await json(base + "/links",payload,{},timeout);
+    try {
+      const url = new URL(provider?.link || provider?.url || provider?.checkout_url);
+      if (url.origin !== "https://buy.infinitepay.io" || url.username || url.password) throw new Error("unsafe");
+      return url.toString();
+    } catch {
+      const error = new Error("unexpected checkout");
+      error.unusableLink = true;
+      throw error;
+    }
+  }
   try {
-    const provider = await json(base + "/links",data,{},4200);
-    const url = new URL(provider?.link || provider?.url || provider?.checkout_url);
-    if (url.origin !== "https://buy.infinitepay.io" || url.username || url.password) throw new Error("unexpected checkout");
-    return reply(res,200,{ link:url.toString() });
-  } catch {
+    return reply(res,200,{ link:await linkFor(data,3400) });
+  } catch (error) {
+    // Retry at most once after a definitive payload/contract rejection or unusable
+    // link. Do not retry outages, rate limits, auth errors, redirects or timeouts.
+    // The alternate is canonical, no webhook, and has a distinct reference: it
+    // cannot be misclassified as the already-snapshotted order.
+    if (tracked && (error.unusableLink || [400,415,422].includes(error.upstreamStatus))) {
+      const { webhook_url:unused, ...fallback } = data;
+      try {
+        return reply(res,200,{ link:await linkFor({...fallback,order_nsu:"dcg-" + randomUUID()},2700) });
+      } catch { /* one fallback, then preserve guest-friendly provider error */ }
+    }
     return reply(res,502,{error:"Não foi possível abrir o checkout agora. Tente novamente."});
   }
 }
