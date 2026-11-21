@@ -1108,3 +1108,41 @@ footer span { font-size: 8px; letter-spacing: .26em; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Hospedagem do casamento */
+.lodging { background: #f7f3ea; scroll-margin-top: 66px; }
+.lodging-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  align-items: center;
+  gap: clamp(22px, 6vw, 88px);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 64px);
+  color: var(--olive-dark);
+  background: var(--cream);
+  border: 1px solid rgba(125, 134, 88, .28);
+  box-shadow: 0 18px 55px rgba(68, 74, 54, .08);
+}
+.lodging-copy > p:not(.eyebrow), .lodging-booking > p:not(.lodging-discount) {
+  max-width: 44ch;
+  margin: 18px 0 0;
+  color: #58604e;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.lodging-copy .lodging-address { margin-top: 8px; font-size: 12px; }
+.lodging-booking {
+  padding-left: clamp(22px, 4vw, 50px);
+  border-left: 1px solid rgba(125, 134, 88, .3);
+}
+.lodging-discount {
+  margin: 0;
+  font: 400 clamp(21px, 3vw, 29px)/1 var(--serif);
+}
+.lodging-discount strong { font-size: clamp(48px, 7vw, 80px); font-weight: 500; }
+.lodging-booking .button { max-width: 100%; margin-top: 22px; letter-spacing: .12em; text-align: center; }
+@media (max-width: 760px) {
+  .lodging-card { grid-template-columns: minmax(0, 1fr); }
+  .lodging-booking { padding: 22px 0 0; border-left: 0; border-top: 1px solid rgba(125, 134, 88, .3); }
+}
