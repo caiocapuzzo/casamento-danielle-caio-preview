@@ -23,6 +23,7 @@ const describe = {
 };
 function notice(text="") { $("notice").textContent = text; }
 function view(target) {
+  $("retry").hidden=true;
   views.forEach(id=>{$(id).hidden = id !== target;});
   $("logout").hidden = target !== "presencas" && target !== "change";
 }
@@ -92,8 +93,20 @@ async function show(state,n) {
   if(n!==epoch)return;
   if (state === "active") {
     view(null);
+    $("logout").hidden=false;
     notice("Carregando respostas…");
-    const result=await call("?view=responses");
+    let result;
+    try { result=await call("?view=responses"); }
+    catch(error) {
+      if(n!==epoch)return;
+      if(error.status===401) {
+        panelKey=""; blank(); view("login"); notice("A sessão expirou. Entre novamente.");
+      } else {
+        $("retry").hidden=false;
+        notice("Você entrou, mas as respostas não carregaram. Tente novamente.");
+      }
+      return;
+    }
     if(n!==epoch)return;
     rows=result.rows;
     for (const id of ["confirmed","declined","people","review"]) $(id).textContent=String(result.counts[id]);
@@ -170,7 +183,8 @@ $("export").addEventListener("click",async()=>{
   finally { button.disabled=false; }
 });
 for (const id of ["search","filter"]) $(id).addEventListener(id==="search"?"input":"change",()=>{limit=30;render();});
+$("retry").addEventListener("click",()=>void refresh());
 $("more").addEventListener("click",()=>{limit+=30;render();});
-window.addEventListener("pagehide",()=>{++epoch;panelKey="";blank();view(null);});
+window.addEventListener("pagehide",()=>{++epoch;panelKey="";$("loginForm").reset();$("changeForm").reset();blank();view(null);});
 window.addEventListener("pageshow",e=>{ if(e.persisted)void refresh(); });
 void refresh();
